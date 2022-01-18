@@ -120,7 +120,7 @@ export default function ThirdToken() {
                 columns={ticketColumn}
                 rowKey="ticket"
                 tableLayout="auto"
-                verticalAlign="top"
+                verticalAlign="middle"
                 size="small"// 与pagination对齐
             />
 
@@ -143,7 +143,7 @@ export default function ThirdToken() {
                 columns={componentTokenColumn}
                 rowKey="componentToken"
                 tableLayout="auto"
-                verticalAlign="top"
+                verticalAlign="middle"
                 size="small"// 与pagination对齐
             />
 

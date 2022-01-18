@@ -178,7 +178,7 @@ export default function AuthorizedAccountManage() {
                 columns={accountColumn}
                 rowKey="index"
                 tableLayout="auto"
-                verticalAlign="top"
+                verticalAlign="middle"
                 size="small"
                 hover
                 // 与pagination对齐
@@ -197,7 +197,7 @@ export default function AuthorizedAccountManage() {
                     columns={tokenColumn}
                     rowKey="index"
                     tableLayout="auto"
-                    verticalAlign="top"
+                    verticalAlign="middle"
                     size="small"
                 />
             </Dialog>

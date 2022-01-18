@@ -239,7 +239,7 @@ export default function ThirdMessage() {
                         columns={authMessageColumn}
                         rowKey="index"
                         tableLayout="auto"
-                        verticalAlign="top"
+                        verticalAlign="middle"
                         size="small"
                         hover
                         // 与pagination对齐
@@ -278,7 +278,7 @@ export default function ThirdMessage() {
                         columns={normalMessageColumn}
                         rowKey="index"
                         tableLayout="auto"
-                        verticalAlign="top"
+                        verticalAlign="middle"
                         size="small"
                         hover
                         // 与pagination对齐
