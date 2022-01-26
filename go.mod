@@ -6,6 +6,7 @@ require (
 	github.com/astaxie/beego v1.12.3
 	github.com/gin-gonic/gin v1.7.6
 	github.com/go-ini/ini v1.64.0
+	github.com/golang-jwt/jwt/v4 v4.2.0
 	github.com/rs/zerolog v1.26.0
 	gorm.io/driver/mysql v1.2.0
 	gorm.io/gorm v1.22.3
@@ -17,7 +18,6 @@ require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.2.0 // indirect
 	github.com/golang/protobuf v1.5.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect
