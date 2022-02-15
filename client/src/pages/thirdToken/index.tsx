@@ -106,7 +106,7 @@ export default function ThirdToken() {
             <p className="text">component_verify_ticket 介绍</p>
             <div className="normal_flex">
                 <div className="blue_circle" />
-                <p className="desc">获取 component_verify_ticket 后可通过接口或者通过下方的功能生成 component_access_token。更多介绍可前往查看<a href="https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/api/ThirdParty/token/component_verify_ticket.html" target="_blank" className="a">官方文档</a></p>
+                <p className="desc" style={{ margin: 0 }}>获取 component_verify_ticket 后可通过接口或者通过下方的功能生成 component_access_token。更多介绍可前往查看<a href="https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/api/ThirdParty/token/component_verify_ticket.html" target="_blank" className="a">官方文档</a></p>
             </div>
             <div className="normal_flex">
                 <div className="blue_circle" />

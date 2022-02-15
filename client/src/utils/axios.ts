@@ -30,7 +30,8 @@ const errorMsg: Record<number, string> = {
     1004: 'Token 错误',
     1005: '用户更新错误',
     1006: '登录失败',
-    1007: 'Ticket 为空'
+    1007: 'Ticket 为空',
+    41004: '尚未配置 Secret，无法生成 token，需前往"系统管理-Secret与密码管理"完成配置后再使用'
 }
 
 type IErrHandle = (code: number, data?: any) => void;
@@ -40,10 +41,14 @@ const defaultErrHandle = async (data: {
     errorMsg: string
     data: string
 }) => {
-    if (data.code === 1002) {
-        return await MessagePlugin.error(`系统错误，请稍后重试 reason: ${data.errorMsg} - ${data.data}`, 2000)
+    switch (data.code) {
+        case 1002: {
+            return await MessagePlugin.error(`系统错误，请稍后重试 reason: ${data.errorMsg} - ${data.data}`, 2000)
+        }
+        default: {
+            return await MessagePlugin.error(errorMsg[data.code] || `系统错误，请稍后重试 code：${data.code}`, 2000)
+        }
     }
-    return await MessagePlugin.error(errorMsg[data.code] || `系统错误，请稍后重试 code：${data.code}`, 2000)
 }
 
 export const get = async (params: IAxiosParams, errHandle?: IErrHandle) => {

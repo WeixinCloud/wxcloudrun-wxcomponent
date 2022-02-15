@@ -15,7 +15,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'https://xxxx.com',
+                target: 'https://srv20211231143005-1524266-1309057895.ap-shanghai.run.tcloudbase.com/',
                 rewrite: path => path.replace(/^\/api/, ''),
                 changeOrigin: true,
             }

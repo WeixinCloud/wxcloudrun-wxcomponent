@@ -1,5 +1,5 @@
 import styles from './index.module.less'
-import { Button, Input, MessagePlugin } from 'tdesign-react'
+import {Button, Dialog, Input, MessagePlugin} from 'tdesign-react'
 import {useState} from "react";
 import {loginUrl} from '../../utils/apis'
 import {useNavigate} from "react-router-dom";
@@ -12,6 +12,7 @@ export default function Login() {
 
     const [username, setUsername] = useState<string | number>('')
     const [password, setPassword] = useState<string | number>('')
+    const [showForgetModal, setShowForgetModal] = useState<boolean>(false)
 
     const nav = useNavigate()
 
@@ -36,14 +37,20 @@ export default function Login() {
     return (
         <div className={styles.login}>
             <div className={styles.login_modal}>
-                <p style={{ margin: 0 }}>登录</p>
-                <p className="desc" style={{ marginBottom: '20px' }}>如忘记初始帐号和密码，可返回"微信开放平台-第三方平台-详情-云服务"进行查看</p>
+                <p style={{ marginBottom: '20px' }}>登录</p>
                 <Input value={username} onChange={(val) => setUsername(val)} placeholder="请输入帐号" style={{ marginBottom: '15px' }} />
-                <Input value={password} onChange={(val) => setPassword(val)} placeholder="请输入密码" type="password" />
+                <Input style={{ marginBottom: '20px' }} value={password} onChange={(val) => setPassword(val)} placeholder="请输入密码" type="password" />
+                <a className="a" onClick={() => setShowForgetModal(true)}>忘记帐号或密码</a>
                 <div style={{ textAlign: 'center' }}>
                     <Button style={{ marginTop: '20px', width: '100px' }} disabled={!Boolean(username && password)} onClick={handleLogin}>登录</Button>
                 </div>
             </div>
+
+            <Dialog header="忘记帐号或密码" visible={showForgetModal} onClose={() => setShowForgetModal(false)} confirmBtn={false}>
+                <p className="desc">如忘记初始帐号和密码，可返回"微信开放平台-站内信"进行查看。</p>
+                <p className="desc">若已重置过密码，需使用重置后的密码登录；如已忘记重置后的密码则无法再登录，需牢记重置后的密码。</p>
+                <p className="desc">如有其他疑问，可扫码加入官方技术支持企业微信群反馈。</p>
+            </Dialog>
         </div>
     )
 }

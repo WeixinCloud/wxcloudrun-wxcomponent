@@ -49,28 +49,24 @@ export default function AuthorizedAccountManage() {
     const accountColumn: PrimaryTableCol[] = [
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             colKey: 'appid',
             title: 'AppID',
         },
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             colKey: 'userName',
             title: '原始ID',
         },
         {
             align: 'center',
-            width: 120,
             minWidth: 120,
             colKey: 'nickName',
             title: '名称',
         },
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             colKey: 'appType',
             title: '帐号类型',
@@ -80,7 +76,6 @@ export default function AuthorizedAccountManage() {
         },
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             colKey: 'authTime',
             title: '授权时间',
@@ -88,14 +83,12 @@ export default function AuthorizedAccountManage() {
         },
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             colKey: 'principalName',
             title: '主体信息',
         },
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             className: 'row',
             colKey: 'index',
@@ -106,7 +99,6 @@ export default function AuthorizedAccountManage() {
         },
         {
             align: 'center',
-            width: 100,
             minWidth: 100,
             className: 'row',
             colKey: 'funcInfo',

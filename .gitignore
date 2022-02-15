@@ -2,7 +2,6 @@
 .DS_Store
 
 client/node_modules
-client/node_modules
 client/.pnp
 client.pnp.js
 client/.idea
@@ -23,3 +22,5 @@ client/.env.production.local
 client/npm-debug.log*
 client/yarn-debug.log*
 client/yarn-error.log*
+client/yarn.lock
+client/package-lock.json
