@@ -53,6 +53,14 @@ export const routes = {
         path: '/developTools/message',
         showPath: '/developTools',
     },
+    forwardMessage: {
+        label: '消息转发器',
+        path: '/forwardMessage'
+    },
+    proxyConfig: {
+        label: 'proxy 配置',
+        path: '/proxyConfig'
+    },
 }
 
 type IMenuItem = {
@@ -83,8 +91,8 @@ const menuList: IMenuList = [{
     icon: <Icon.ViewListIcon />,
     item: [{
         ...routes.developTools,
-        hideItem: [routes.thirdToken, routes.thirdMessage]
-    }]
+        hideItem: [routes.thirdToken, routes.thirdMessage],
+    }, routes.forwardMessage, routes.proxyConfig]
 }, {
     label: '系统管理',
     icon: <Icon.SettingIcon />,

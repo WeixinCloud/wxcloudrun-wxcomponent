@@ -1,8 +1,12 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
+// 详细配置信息 https://vitejs.dev/config/
 export default defineConfig({
+    build: {
+        // wxcomponent 为微管家使用路径前缀
+        assetsDir: 'wxcomponent/assets'
+    },
     plugins: [react()],
     css: {
         preprocessorOptions: {
@@ -15,7 +19,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'https://srv20211231143005-1524266-1309057895.ap-shanghai.run.tcloudbase.com/',
+                target: 'https://wxcomponent-1421032-1304480914.ap-shanghai.run.tcloudbase.com/',
                 rewrite: path => path.replace(/^\/api/, ''),
                 changeOrigin: true,
             }

@@ -1,8 +1,8 @@
 import {Table, Input, PopConfirm, Dialog} from 'tdesign-react';
 import { SearchIcon } from 'tdesign-icons-react'
 import {useEffect, useState} from "react";
-import {get} from "../../utils/axios";
-import {getAuthAccessTokenUrl, getAuthorizedAccountUrl} from "../../utils/apis";
+import {request} from "../../utils/axios";
+import {getAuthAccessTokenRequest, getAuthorizedAccountRequest} from "../../utils/apis";
 import {PrimaryTableCol} from "tdesign-react/es/table/type";
 import moment from "moment";
 import {copyMessage} from "../../utils/common";
@@ -140,9 +140,12 @@ export default function AuthorizedAccountManage() {
         getAccountList()
     }, [currentPage])
 
-    const createToken = async (appid: string) => {
-        const resp = await get({
-            url: `${getAuthAccessTokenUrl}?appid=${appid}`
+    const createToken = async (appId: string) => {
+        const resp = await request({
+            request: getAuthAccessTokenRequest,
+            data: {
+                appid: appId
+            }
         })
         if (resp.code === 0) {
             setTokenData([{
@@ -153,8 +156,13 @@ export default function AuthorizedAccountManage() {
     }
 
     const getAccountList = async () => {
-        const resp = await get({
-            url: `${getAuthorizedAccountUrl}?offset=${(currentPage - 1) * pageSize}&limit=${pageSize}&appid=${appIdInput}`,
+        const resp = await request({
+            request: getAuthorizedAccountRequest,
+            data: {
+                offset: (currentPage - 1) * pageSize,
+                limit: pageSize,
+                appid: appIdInput
+            }
         })
         if (resp.code === 0) {
             setAccountList(resp.data.records)

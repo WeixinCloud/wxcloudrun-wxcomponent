@@ -1,11 +1,11 @@
 import styles from './index.module.less'
 import {Button, Dialog, Input, MessagePlugin} from 'tdesign-react'
 import {useState} from "react";
-import {loginUrl} from '../../utils/apis'
+import {loginRequest} from '../../utils/apis'
 import {useNavigate} from "react-router-dom";
 import moment from "moment";
 import md5 from 'js-md5'
-import {put} from "../../utils/axios";
+import {request} from "../../utils/axios";
 import {routes} from "../../components/Console";
 
 export default function Login() {
@@ -17,13 +17,13 @@ export default function Login() {
     const nav = useNavigate()
 
     const handleLogin = async () => {
-        const resp = await put({
-            url: loginUrl,
+        const resp = await request({
+            request: loginRequest,
             data: {
                 username,
                 password: md5(String(password))
             },
-            notNeedCheckLogin: true
+            noNeedCheckLogin: true
         })
         if (resp.code === 0) {
             localStorage.setItem('token', resp.data.jwt)

@@ -18,3 +18,11 @@ export const copyMessage = (msg: string) => {
         }, 0)
     })
 }
+
+export const objToQueryString = (obj: Object) => {
+    let str = ''
+    Object.entries(obj).forEach(([key, value]) => {
+        str += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+    });
+    return str
+}

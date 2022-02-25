@@ -1,12 +1,23 @@
 import axios, {AxiosRequestConfig} from 'axios'
-import { checkLogin } from "./login";
+import {checkLogin, logout} from "./login";
 import { MessagePlugin } from "tdesign-react";
+import {objToQueryString} from "./common";
 
 type IAxiosParams = {
     url: string
     data?: Record<string, any>
     config?: AxiosRequestConfig
-    notNeedCheckLogin?: boolean
+    noNeedCheckLogin?: boolean
+}
+
+type IAxiosParams1 = {
+    request: {
+        method: 'get' | 'post' | 'put' | 'delete'
+        url: string
+    }
+    data?: Record<string, any>
+    config?: AxiosRequestConfig
+    noNeedCheckLogin?: boolean
 }
 
 type IAxiosResp = {
@@ -36,23 +47,36 @@ const errorMsg: Record<number, string> = {
 
 type IErrHandle = (code: number, data?: any) => void;
 
-const defaultErrHandle = async (data: {
+const mustErrHandle = (data: {
+    code: number
+    errorMsg: string
+    data: string
+}) => {
+    if (data.code === 1003 || data.code === 1004) {
+        logout()
+        MessagePlugin.error(errorMsg[data.code], 2000)
+        return true
+    }
+    return false
+}
+
+const defaultErrHandle = (data: {
     code: number
     errorMsg: string
     data: string
 }) => {
     switch (data.code) {
         case 1002: {
-            return await MessagePlugin.error(`系统错误，请稍后重试 reason: ${data.errorMsg} - ${data.data}`, 2000)
+            return MessagePlugin.error(`系统错误，请稍后重试 reason: ${data.errorMsg} - ${data.data}`, 2000)
         }
         default: {
-            return await MessagePlugin.error(errorMsg[data.code] || `系统错误，请稍后重试 code：${data.code}`, 2000)
+            return MessagePlugin.error(errorMsg[data.code] || `系统错误，请稍后重试 code：${data.code}`, 2000)
         }
     }
 }
 
 export const get = async (params: IAxiosParams, errHandle?: IErrHandle) => {
-    if (!params.notNeedCheckLogin) {
+    if (!params.noNeedCheckLogin) {
         if (!checkLogin()) {
             return noLoginError
         }
@@ -66,16 +90,19 @@ export const get = async (params: IAxiosParams, errHandle?: IErrHandle) => {
     if (data.code === 0) {
         return data
     }
-    if (errHandle) {
-        errHandle(data.code, data)
-    } else {
-        defaultErrHandle(data)
+    if (!mustErrHandle(data)) {
+        if (errHandle) {
+            errHandle(data.code, data)
+
+        } else {
+            defaultErrHandle(data)
+        }
     }
     return data
 }
 
 export const post = async (params: IAxiosParams, errHandle?: IErrHandle) => {
-    if (!params.notNeedCheckLogin) {
+    if (!params.noNeedCheckLogin) {
         if (!checkLogin()) {
             return noLoginError
         }
@@ -89,16 +116,19 @@ export const post = async (params: IAxiosParams, errHandle?: IErrHandle) => {
     if (data.code === 0) {
         return data
     }
-    if (errHandle) {
-        errHandle(data.code, data)
-    } else {
-        defaultErrHandle(data)
+    if (!mustErrHandle(data)) {
+        if (errHandle) {
+            errHandle(data.code, data)
+
+        } else {
+            defaultErrHandle(data)
+        }
     }
     return data
 }
 
 export const put = async (params: IAxiosParams, errHandle?: IErrHandle) => {
-    if (!params.notNeedCheckLogin) {
+    if (!params.noNeedCheckLogin) {
         if (!checkLogin()) {
             return noLoginError
         }
@@ -112,10 +142,79 @@ export const put = async (params: IAxiosParams, errHandle?: IErrHandle) => {
     if (data.code === 0) {
         return data
     }
-    if (errHandle) {
-        errHandle(data.code, data)
-    } else {
-        defaultErrHandle(data)
+    if (!mustErrHandle(data)) {
+        if (errHandle) {
+            errHandle(data.code, data)
+
+        } else {
+            defaultErrHandle(data)
+        }
     }
     return data
+}
+
+export const deleteRequest = async (params: IAxiosParams, errHandle?: IErrHandle) => {
+    if (!params.noNeedCheckLogin) {
+        if (!checkLogin()) {
+            return noLoginError
+        }
+    }
+    const data = (await axios.delete(`${params.url}`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token') || ''}`
+        },
+        ...params.config
+    })).data as IAxiosResp
+    if (data.code === 0) {
+        return data
+    }
+    if (!mustErrHandle(data)) {
+        if (errHandle) {
+            errHandle(data.code, data)
+
+        } else {
+            defaultErrHandle(data)
+        }
+    }
+    return data
+}
+
+export const request = async (params: IAxiosParams1, errHandle?: IErrHandle) => {
+    if (!params.noNeedCheckLogin) {
+        if (!checkLogin()) {
+            return noLoginError
+        }
+    }
+    switch (params.request.method) {
+        case "get": {
+            return get({
+                url: `${params.request.url}?${params.data ? objToQueryString(params.data) : ''}`,
+                noNeedCheckLogin: true,
+                config: params.config
+            }, errHandle)
+        }
+        case "post": {
+            return post({
+                url: params.request.url,
+                noNeedCheckLogin: true,
+                data: params.data,
+                config: params.config
+            }, errHandle)
+        }
+        case "put": {
+            return put({
+                url: params.request.url,
+                noNeedCheckLogin: true,
+                data: params.data,
+                config: params.config
+            }, errHandle)
+        }
+        case "delete": {
+            return deleteRequest({
+                url: `${params.request.url}?${params.data ? objToQueryString(params.data) : ''}`,
+                noNeedCheckLogin: true,
+                config: params.config
+            }, errHandle)
+        }
+    }
 }

@@ -1,6 +1,6 @@
 import moment from 'moment'
-import {get} from "./axios";
-import { refreshTokenUrl } from './apis'
+import {request} from "./axios";
+import { refreshTokenRequest } from './apis'
 
 let nav: (to: string) => void
 
@@ -41,9 +41,9 @@ export const checkLogin = () => {
 }
 
 export const refreshToken = async () => {
-    const resp = await get({
-        url: refreshTokenUrl,
-        notNeedCheckLogin: true,
+    const resp = await request({
+        request: refreshTokenRequest,
+        noNeedCheckLogin: true,
     }, (code) => {
         if (code === 1004) {
             localStorage.removeItem('token')

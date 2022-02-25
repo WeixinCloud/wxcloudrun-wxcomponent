@@ -1,12 +1,12 @@
 import styles from './index.module.less'
 import {MessagePlugin, Dialog, Input} from "tdesign-react";
-import {get, post} from "../../utils/axios";
+import {request} from "../../utils/axios";
 import {
-    changePasswordUrl,
-    changeUserNameUrl,
-    getComponentInfoUrl,
-    getSecretUrl,
-    setSecretUrl
+    changePasswordRequest,
+    changeUserNameRequest,
+    getComponentInfoRequest,
+    getSecretRequest,
+    setSecretRequest
 } from "../../utils/apis";
 import {useEffect, useState} from "react";
 import md5 from 'js-md5';
@@ -31,15 +31,15 @@ export default function PasswordManage() {
     }, [])
 
     const getSomeInfo = async () => {
-        const resp = await get({
-            url: getComponentInfoUrl
+        const resp = await request({
+            request: getComponentInfoRequest
         })
         if (resp.code === 0) {
             setComponentAppId(resp.data.appid)
         }
 
-        const resp2 = await get({
-            url: getSecretUrl
+        const resp2 = await request({
+            request: getSecretRequest
         })
         if (resp2.code === 0) {
             setSecret(resp2.data.secret)
@@ -50,8 +50,8 @@ export default function PasswordManage() {
         if (!secretInput) {
             return MessagePlugin.error('有信息未输入', 2000)
         }
-        const resp = await post({
-            url: setSecretUrl,
+        const resp = await request({
+            request: setSecretRequest,
             data: {
                 secret: secretInput
             }
@@ -68,8 +68,8 @@ export default function PasswordManage() {
         if (!usernameInput) {
             return MessagePlugin.error('有信息未输入', 2000)
         }
-        const resp = await post({
-            url: changeUserNameUrl,
+        const resp = await request({
+            request: changeUserNameRequest,
             data: {
                 username: usernameInput
             }
@@ -96,8 +96,8 @@ export default function PasswordManage() {
         if (!(/^[\w!@#$%^&*()+.]{6,10}$/.test(String(passwordInput)))) {
             return MessagePlugin.error('密码不符合要求', 2000)
         }
-        const resp = await post({
-            url: changePasswordUrl,
+        const resp = await request({
+            request: changePasswordRequest,
             data: {
                 password: md5(String(passwordInput)),
                 oldPassword: md5(String(oldPasswordInput)),
