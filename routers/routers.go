@@ -37,7 +37,7 @@ func Init() *gin.Engine {
 	}
 
 	// 静态文件
-	g.Static("/assets", "client/dist/assets")
+	g.Static("/assets", "client/dist/wxcomponent/assets")
 	r.LoadHTMLGlob("client/dist/index.html")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
