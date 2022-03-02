@@ -49,6 +49,10 @@ export const changeUserNameRequest: IRequestMsg = {
     url: `${HOST}/admin/username`,
     method: "post"
 }
+export const updateComponentInfoRequest: IRequestMsg = {
+    url: `${HOST}/admin/componentinfo`,
+    method: "post"
+}
 
 export const getPreAuthCodeRequest: IRequestMsg = {
     url: `${HOST}/authpage/preauthcode`,
@@ -65,7 +69,7 @@ export const loginRequest: IRequestMsg = {
 }
 export const refreshTokenRequest: IRequestMsg = {
     url: `${HOST}/admin/refresh-auth`,
-    method: "post"
+    method: "get"
 }
 
 export const getProxyConfigRequest: IRequestMsg = {
@@ -92,4 +96,8 @@ export const addCallbackRuleRequest: IRequestMsg = {
 export const deleteCallbackRuleRequest: IRequestMsg = {
     url: `${HOST}/admin/callback-proxy-rule`, // 删除消息推送转发配置
     method: "delete"
+}
+export const testCallbackRuleRequest: IRequestMsg = {
+    url: `${HOST}/admin/callback-test`, // 测试消息推送转发配置
+    method: "post"
 }

@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import styles from './index.module.less'
 import Menu from '../Menu'
-import {Outlet, useNavigate, useLocation, Link} from "react-router-dom";
+import {Outlet, useNavigate, useLocation} from "react-router-dom";
 import * as Icon from 'tdesign-icons-react'
 import {Dropdown, Dialog} from 'tdesign-react';
 import {checkLogin, initNav, logout} from "../../utils/login";
@@ -61,6 +61,10 @@ export const routes = {
         label: 'proxy 配置',
         path: '/proxyConfig'
     },
+    redirectPage: {
+        label: '授权回调跳转页',
+        path: '/redirectPage'
+    }
 }
 
 type IMenuItem = {
@@ -201,7 +205,7 @@ export default function Console() {
             </div>
             <Dialog header="通知中心" visible={showNotice} onConfirm={() => setShowNotice(false)}
                     onClose={() => setShowNotice(false)}>
-                <p>管理工具最新版本为V 1.1.2，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看 2022-02-15</p>
+                <p>管理工具最新版本为V 1.1.3，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看 2022-02-15</p>
             </Dialog>
         </div>
     )

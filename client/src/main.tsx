@@ -19,6 +19,7 @@ import Home from "./pages/home";
 import DevelopTools from "./pages/developTools";
 import ForwardMessage from "./pages/forwardMessage";
 import ProxyConfig from "./pages/proxyConfig";
+import RedirectPage from "./pages/redirectPage";
 
 ReactDOM.render(
     <React.StrictMode>
@@ -27,6 +28,7 @@ ReactDOM.render(
                 <Route path={routes.login.path} element={<Login />} />
                 <Route path={routes.authorize.path} element={<AuthPage />} />
                 <Route path={routes.authorizeH5.path} element={<AuthPageH5 />} />
+                <Route path={routes.redirectPage.path} element={<RedirectPage />} />
                 <Route path={"/"} element={<Console />}>
                     <Route path={routes.home.path} element={<Home />} />
                     <Route path={routes.thirdToken.path} element={<ThirdToken />} />
