@@ -5,12 +5,14 @@ import (
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/api/admin"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/api/authpage"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/api/innerservice"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/api/proxy"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/api/wxcallback"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/middleware"
 	"github.com/gin-gonic/gin"
 )
 
-type Option func(*gin.Engine)
+type Option func(*gin.RouterGroup)
 
 var options []Option
 
@@ -24,16 +26,30 @@ func Init() *gin.Engine {
 	r := gin.Default()
 	r.Use(middleware.LogMiddleWare)
 
-	// 加载多个APP的路由配置
-	Include(admin.Routers, wxcallback.Routers, authpage.Routers)
+	// 微信消息推送
+	wxcallback.Routers(r)
 
+	// 微管家
+	Include(admin.Routers, authpage.Routers)
+	g := r.Group("/wxcomponent")
 	for _, opt := range options {
-		opt(r)
+		opt(g)
 	}
-	r.Static("/assets", "client/dist/assets")
+
+	// 静态文件
+	g.Static("/assets", "client/dist/assets")
 	r.LoadHTMLGlob("client/dist/index.html")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
+	r.NoRoute(proxy.ProxyHandler)
+	return r
+}
+
+// InnerServiceInit 内部服务初始化
+func InnerServiceInit() *gin.Engine {
+	r := gin.Default()
+	r.Use(middleware.LogMiddleWare)
+	innerservice.Routers(r)
 	return r
 }

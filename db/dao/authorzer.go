@@ -13,7 +13,6 @@ const authorizerTableName = "authorizers"
 // CreateOrUpdateAuthorizerRecord 创建或更新授权账号信息
 func CreateOrUpdateAuthorizerRecord(record *model.Authorizer) error {
 	var err error
-
 	cli := db.Get()
 	if err = cli.Table(authorizerTableName).Clauses(clause.OnConflict{
 		UpdateAll: true,
@@ -68,8 +67,7 @@ func DelAuthorizerRecord(appid string) error {
 
 	cli := db.Get()
 	if err = cli.Table(authorizerTableName).
-		Where("appid = ?", appid).
-		Delete(model.Authorizer{}).Error; err != nil {
+		Where("appid = ?", appid).Delete(model.Authorizer{}).Error; err != nil {
 		return err
 	}
 	return nil

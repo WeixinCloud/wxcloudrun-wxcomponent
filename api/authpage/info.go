@@ -12,7 +12,7 @@ import (
 )
 
 func getComponentInfoHandler(c *gin.Context) {
-	value := dao.GetByStr("authinfo", "{}")
+	value := dao.GetCommKv("authinfo", "{}")
 	var mapResult map[string]interface{}
 	if err := json.Unmarshal([]byte(value), &mapResult); err != nil {
 		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))

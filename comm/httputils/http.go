@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
-	token "github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/token/cloudbasetoken"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/token/cloudbasetoken"
 )
 
 type wxCommError struct {
@@ -19,7 +19,7 @@ type wxCommError struct {
 
 // GetWxApiUrl 拼接微信开放平台的url
 func GetWxApiUrl(path string) string {
-	return fmt.Sprintf("https://api.weixin.qq.com%s?cloudbase_access_token=%s", path, token.GetCloudBaseAccessToken())
+	return fmt.Sprintf("https://api.weixin.qq.com%s?cloudbase_access_token=%s", path, cloudbasetoken.GetCloudBaseAccessToken())
 }
 
 // GetRawWxApiUrl 拼接微信开放平台的url，不带微信令牌
@@ -66,6 +66,9 @@ func Post(url string, data interface{}, contentType string) ([]byte, error) {
 		return []byte{}, err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return []byte{}, fmt.Errorf("http code: %d", resp.StatusCode)
+	}
 
 	result, _ := ioutil.ReadAll(resp.Body)
 	log.Debugf("http resp: %s", result)

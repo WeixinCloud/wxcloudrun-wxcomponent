@@ -7,7 +7,9 @@ require (
 	github.com/gin-gonic/gin v1.7.6
 	github.com/go-ini/ini v1.64.0
 	github.com/golang-jwt/jwt/v4 v4.2.0
+	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/rs/zerolog v1.26.0
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	gorm.io/driver/mysql v1.2.0
 	gorm.io/gorm v1.22.3
 )

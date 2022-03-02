@@ -30,7 +30,7 @@ type authorizerInfo struct {
 }
 type getAuthorizerListResp struct {
 	TotalCount int              `json:"total_count"`
-	List       []authorizerInfo `json:list`
+	List       []authorizerInfo `json:"list"`
 }
 
 func pullAuthorizerListHandler(c *gin.Context) {

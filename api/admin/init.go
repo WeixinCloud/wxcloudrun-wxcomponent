@@ -11,12 +11,10 @@ import (
 
 // InitAdmin 初始化管理员
 func InitAdmin(username, password string) error {
-	err := dao.AddUserRecord(username, password)
-	if err != nil {
+	if err := dao.AddUserRecordIfNeeded(username, password); err != nil {
 		log.Errorf("InitAuth err %v", err)
 		return err
 	}
-	log.Debugf("SaveUser user[%s] pwd[%s] Succ ", username, password)
 	return nil
 }
 

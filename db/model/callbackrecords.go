@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 // WxCallbackComponentRecord 第三方授权事件的记录
 type WxCallbackComponentRecord struct {
@@ -19,4 +22,30 @@ type WxCallbackBizRecord struct {
 	MsgType     string    `gorm:"column:msgtype" json:"msgType"`
 	Event       string    `gorm:"column:event" json:"event"`
 	PostBody    string    `gorm:"column:postbody" json:"postBody"`
+}
+
+func (r WxCallbackComponentRecord) MarshalJSON() ([]byte, error) {
+	type Alias WxCallbackComponentRecord
+	return json.Marshal(&struct {
+		Alias
+		ReceiveTime int64 `json:"receiveTime"`
+		CreateTime  int64 `json:"createTime"`
+	}{
+		Alias:       (Alias)(r),
+		ReceiveTime: r.ReceiveTime.UnixNano() / 1e6,
+		CreateTime:  r.CreateTime.UnixNano() / 1e6,
+	})
+}
+
+func (r WxCallbackBizRecord) MarshalJSON() ([]byte, error) {
+	type Alias WxCallbackBizRecord
+	return json.Marshal(&struct {
+		Alias
+		ReceiveTime int64 `json:"receiveTime"`
+		CreateTime  int64 `json:"createTime"`
+	}{
+		Alias:       (Alias)(r),
+		ReceiveTime: r.ReceiveTime.UnixNano() / 1e6,
+		CreateTime:  r.CreateTime.UnixNano() / 1e6,
+	})
 }

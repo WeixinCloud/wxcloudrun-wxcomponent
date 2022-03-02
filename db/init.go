@@ -10,9 +10,11 @@ import (
 	"gorm.io/gorm/schema"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
+	"github.com/patrickmn/go-cache"
 )
 
 var dbInstance *gorm.DB
+var cacheInstance *cache.Cache
 
 // Init 初始化数据库
 func Init() error {
@@ -55,10 +57,19 @@ func Init() error {
 	dbInstance = db
 
 	fmt.Println("finish inits mysql with ", source)
+
+	// 初始化cache
+	cacheInstance = cache.New(5*time.Minute, 10*time.Minute)
+
 	return nil
 }
 
 // Get
 func Get() *gorm.DB {
 	return dbInstance
+}
+
+// GetCache
+func GetCache() *cache.Cache {
+	return cacheInstance
 }

@@ -3,6 +3,7 @@ package wxbase
 import (
 	"os"
 	"strings"
+	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/dao"
@@ -44,20 +45,20 @@ func GetAppid() string {
 
 // GetSecret 获取Secret
 func GetSecret() string {
-	return dao.GetByStrDecrypt("secret", "")
+	return dao.GetCommKvDecrypt("secret", "")
 }
 
 // SetSecret 更新Secret
 func SetSecret(s string) error {
-	return dao.SetByStrEncrypt("secret", s)
+	return dao.SetCommKvEncrypt("secret", s)
 }
 
 // GetTicket 获取最新ticket
 func GetTicket() string {
-	return dao.GetByStr("ticket", "")
+	return dao.GetCommKvWithCache("ticket", "", 15*time.Minute)
 }
 
 // GetTicket 更新ticket
 func SetTicket(s string) error {
-	return dao.SetByStr("ticket", s)
+	return dao.SetCommKvWithCache("ticket", s, 15*time.Minute)
 }

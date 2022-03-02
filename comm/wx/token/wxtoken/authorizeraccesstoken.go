@@ -1,4 +1,4 @@
-package token
+package wxtoken
 
 import (
 	"encoding/json"
@@ -8,6 +8,7 @@ import (
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	wxbase "github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/base"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/dao"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
 )
 
 type authorizerAccessTokenReq struct {
@@ -21,8 +22,12 @@ type authorizerAccessTokenResp struct {
 	ExpiresIn             uint64 `json:"expires_in"`
 }
 
-// GetNewAuthorizerAccessToken 获取新AuthorizerAccessToken
-func GetNewAuthorizerAccessToken(appid string) (string, error) {
+// GetAuthorizerAccessToken 获取AuthorizerAccessToken
+func GetAuthorizerAccessToken(appid string) (string, error) {
+	return getAccessToken(appid, model.WXTOKENTYPE_AUTH)
+}
+
+func getNewAuthorizerAccessToken(appid string) (string, error) {
 	records, _, err := dao.GetAuthorizerRecords(appid, 0, 1)
 	if err != nil {
 		return "", err

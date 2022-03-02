@@ -33,8 +33,9 @@ func getWxSecretHandler(c *gin.Context) {
 }
 
 type componentInfo struct {
-	Name string `json:"name"`
-	Desc string `json:"desc"`
+	Name        string `json:"name"`
+	Desc        string `json:"desc"`
+	RedirectUrl string `json:"redirectUrl"`
 }
 
 func setComponentInfoHandler(c *gin.Context) {
@@ -44,7 +45,7 @@ func setComponentInfoHandler(c *gin.Context) {
 		return
 	}
 	value, _ := json.Marshal(req)
-	if err := dao.SetByStr("authinfo", string(value)); err != nil {
+	if err := dao.SetCommKv("authinfo", string(value)); err != nil {
 		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
 		return
 	}

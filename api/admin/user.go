@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type userRequest struct {
+type userReq struct {
 	Username    string `json:"username"`    // 用户名
 	Password    string `json:"password"`    // 密码md5
 	OldPassword string `json:"oldPassword"` // 旧密码md5
@@ -22,7 +22,7 @@ type userRequest struct {
 
 // 更新用户密码
 func updateUserNameHandler(c *gin.Context) {
-	var req userRequest
+	var req userReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Error(err.Error())
 		c.JSON(http.StatusOK, errno.ErrInvalidParam.WithData(err.Error()))
@@ -45,7 +45,7 @@ func updateUserNameHandler(c *gin.Context) {
 
 // 更新用户密码
 func updateUserPwdHandler(c *gin.Context) {
-	var req userRequest
+	var req userReq
 	if err := c.ShouldBindJSON(&req); err != nil {
 		log.Error(err.Error())
 		c.JSON(http.StatusOK, errno.ErrInvalidParam.WithData(err.Error()))
