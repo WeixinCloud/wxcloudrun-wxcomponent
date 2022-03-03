@@ -1,6 +1,7 @@
 import {useEffect} from "react";
 import {request} from "../../utils/axios";
 import {getComponentInfoRequest} from "../../utils/apis";
+import {routes} from "../../components/Console";
 
 export default function RedirectPage() {
 
@@ -14,7 +15,8 @@ export default function RedirectPage() {
             noNeedCheckLogin: true
         })
         if (resp.code === 0) {
-            window.location.href = resp.data.redirectUrl + window.location.search
+            console.log(window.location.search, location)
+            window.location.href = resp.data.redirectUrl + window.location.hash.replaceAll(`#${routes.redirectPage.path}`, '')
         }
     }
 
