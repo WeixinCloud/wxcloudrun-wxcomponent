@@ -24,10 +24,7 @@ export default function AuthPage() {
                 redirectUrl = resp.data.redirectUrl.includes(window.location.origin) ? resp.data.redirectUrl : `${window.location.origin}/#${routes.redirectPage.path}`
             }
             if (resp1.code === 0) {
-                if (redirectUrl.includes('#')) {
-                    redirectUrl = redirectUrl.replaceAll('#', 'changeWxSymbolRedirect')
-                }
-                window.location.href = `https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=${resp.data.appid}&pre_auth_code=${resp1.data.preAuthCode}&auth_type=3&redirect_uri=${redirectUrl}`
+                window.location.href = `https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=${resp.data.appid}&pre_auth_code=${resp1.data.preAuthCode}&auth_type=3&redirect_uri=${encodeURIComponent(redirectUrl)}`
             }
         }
     }
