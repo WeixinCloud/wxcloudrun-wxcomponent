@@ -128,6 +128,11 @@ export default function Console() {
     const [username] = useState(localStorage.getItem('username') || '')
 
     useEffect(() => {
+        // hardcode 暂时没想到太好的解决方法
+        if (window.location.href.includes('changeWxSymbolRedirect')) {
+            window.location.href = window.location.href.replaceAll('changeWxSymbolRedirect', '#')
+            return;
+        }
         initNav(navigate)
         if (checkLogin()) {
             if (location.pathname === '/' || location.pathname === routes.login.path) {

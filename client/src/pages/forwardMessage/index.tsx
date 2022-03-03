@@ -233,7 +233,6 @@ export default function ForwardMessage() {
     }
 
     const handleCreateRule = async (e: any) => {
-        console.log(e.validateResult)
         if (e.validateResult !== true) {
             return
         }
@@ -378,115 +377,117 @@ export default function ForwardMessage() {
 
             <Dialog visible={showRuleModal} onClose={handleCloseCreateModal} cancelBtn={false} confirmBtn={false}
                     header="添加规则">
-                {
-                    isAuthTab
-                        ?
-                        <Form onSubmit={handleCreateRule} ref={form1Ref} colon={true}>
-                            <FormItem name="name" label="规则名称"
-                                      rules={[
-                                          {required: true, message: '规则名称必填', type: 'error'},
-                                          {max: 30, message: '不能超过30个字符', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} placeholder="请输入名称，不超过30个字符" />
-                            </FormItem>
-                            <FormItem label="消息类型">
-                                <div className="normal_flex">
-                                    <p style={{margin: '0 15px 0 0'}}>授权事件</p>
-                                    <Popup trigger="hover" showArrow content={authMessageExample}
-                                           destroyOnClose={true}
-                                           placement="bottom">
-                                        <a className="a">查看示例</a>
-                                    </Popup>
-                                </div>
-                            </FormItem>
-                            <FormItem name="infoType" label="InfoType"
-                                      rules={[
-                                          {required: true, message: 'InfoType必填', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} placeholder="请输入InfoType，例如authorized" />
-                            </FormItem>
-                            <FormItem name="path" label="目标路径"
-                                      rules={[
-                                          {required: true, message: '目标路径必填', type: 'error'},
-                                      ]}
-                                      help={!isAuthTab ? '支持填写带参数的录几个，/$APPID$，如/wxacallback/biz/$APPID$/callback，实际接收消息时$APPID$将被替换为公众号或小程序AppId' : undefined}
-                            >
-                                <Input clearable={true} placeholder="请输入目标路径，例如/path/ticket" />
-                            </FormItem>
-                            <FormItem name="port" label="端口"
-                                      rules={[
-                                          {required: true, message: '端口必填', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} type="number" placeholder="请输入转发端口" />
-                            </FormItem>
-                            <FormItem statusIcon={false}>
-                                <Button theme="primary" type="submit" block>
-                                    添加规则
-                                </Button>
-                            </FormItem>
-                        </Form>
-                        :
-                        <Form onSubmit={handleCreateRule} ref={form2Ref} colon={true}>
-                            <FormItem name="name" label="规则名称"
-                                      rules={[
-                                          {required: true, message: '规则名称必填', type: 'error'},
-                                          {max: 30, message: '不能超过30个字符', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} placeholder="请输入名称，不超过30个字符" />
-                            </FormItem>
-                            <FormItem label="消息类型">
-                                <div className="normal_flex">
-                                    <p style={{margin: '0 15px 0 0'}}>普通消息与事件</p>
-                                    <Popup trigger="hover" showArrow content={normalMessageExample}
-                                           destroyOnClose={true} placement="bottom">
-                                        <a className="a">查看示例</a>
-                                    </Popup>
-                                </div>
-                            </FormItem>
-                            <FormItem name="msgType" label="MsgType"
-                                      rules={[
-                                          {required: true, message: 'MsgType必填', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} placeholder="请输入MsgType，例如Event、Text" />
-                            </FormItem>
-                            <FormItem name="event" label="Event"
-                                      rules={[
-                                          {required: true, message: 'Event必填', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} placeholder="请输入Event，例如wxa_nickname_audit" />
-                            </FormItem>
-                            <FormItem name="path" label="目标路径"
-                                      rules={[
-                                          {required: true, message: '目标路径必填', type: 'error'},
-                                      ]}
-                                      help={!isAuthTab ? '支持填写带参数的录几个，/$APPID$，如/wxacallback/biz/$APPID$/callback，实际接收消息时$APPID$将被替换为公众号或小程序AppId' : undefined}
-                            >
-                                <Input clearable={true} placeholder="请输入目标路径，例如/path/ticket" />
-                            </FormItem>
-                            <FormItem name="port" label="端口"
-                                      rules={[
-                                          {required: true, message: '端口必填', type: 'error'},
-                                      ]}
-                            >
-                                <Input clearable={true} type="number" placeholder="请输入转发端口" />
-                            </FormItem>
-                            <FormItem statusIcon={false}>
-                                <Button theme="primary" type="submit" block>
-                                    添加规则
-                                </Button>
-                            </FormItem>
-                        </Form>
-                }
+                <div style={{display: isAuthTab ? 'block' : 'none'}}>
+                    <Form onSubmit={handleCreateRule} ref={form1Ref} colon={true}>
+                        <FormItem name="name" label="规则名称"
+                                  rules={[
+                                      {required: true, message: '规则名称必填', type: 'error'},
+                                      {max: 30, message: '不能超过30个字符', type: 'error'},
+                                  ]}
+                        >
+                            <Input clearable={true} placeholder="请输入名称，不超过30个字符" />
+                        </FormItem>
+                        <FormItem label="消息类型">
+                            <div className="normal_flex">
+                                <p style={{margin: '0 15px 0 0'}}>授权事件</p>
+                                <Popup trigger="hover" showArrow content={authMessageExample}
+                                       destroyOnClose={true}
+                                       placement="bottom">
+                                    <a className="a">查看示例</a>
+                                </Popup>
+                            </div>
+                        </FormItem>
+                        <FormItem name="infoType" label="InfoType"
+                                  rules={[
+                                      {required: true, message: 'InfoType必填', type: 'error'},
+                                  ]}
+                                  help="按文档填写，区分大小写"
+                        >
+                            <Input clearable={true} placeholder="请输入InfoType，例如authorized" />
+                        </FormItem>
+                        <FormItem name="path" label="目标路径"
+                                  rules={[
+                                      {required: true, message: '目标路径必填', type: 'error'},
+                                  ]}
+                                  help={!isAuthTab ? '支持填写带参数的录几个，/$APPID$，如/wxacallback/biz/$APPID$/callback，实际接收消息时$APPID$将被替换为公众号或小程序AppId' : undefined}
+                        >
+                            <Input clearable={true} placeholder="请输入目标路径，例如/path/ticket" />
+                        </FormItem>
+                        <FormItem name="port" label="端口"
+                                  rules={[
+                                      {required: true, message: '端口必填', type: 'error'},
+                                  ]}
+                        >
+                            <Input clearable={true} type="number" placeholder="请输入转发端口" />
+                        </FormItem>
+                        <FormItem statusIcon={false}>
+                            <Button theme="primary" type="submit" block>
+                                添加规则
+                            </Button>
+                        </FormItem>
+                    </Form>
+                </div>
+                <div style={{display: !isAuthTab ? 'block' : 'none'}}>
+                    <Form onSubmit={handleCreateRule} ref={form2Ref} colon={true}>
+                        <FormItem name="name" label="规则名称"
+                                  rules={[
+                                      {required: true, message: '规则名称必填', type: 'error'},
+                                      {max: 30, message: '不能超过30个字符', type: 'error'},
+                                  ]}
+                        >
+                            <Input clearable={true} placeholder="请输入名称，不超过30个字符" />
+                        </FormItem>
+                        <FormItem label="消息类型">
+                            <div className="normal_flex">
+                                <p style={{margin: '0 15px 0 0'}}>普通消息与事件</p>
+                                <Popup trigger="hover" showArrow content={normalMessageExample}
+                                       destroyOnClose={true} placement="bottom">
+                                    <a className="a">查看示例</a>
+                                </Popup>
+                            </div>
+                        </FormItem>
+                        <FormItem name="msgType" label="MsgType"
+                                  rules={[
+                                      {required: true, message: 'MsgType必填', type: 'error'},
+                                  ]}
+                                  help="按文档填写，区分大小写"
+                        >
+                            <Input clearable={true} placeholder="请输入MsgType，例如Event、Text" />
+                        </FormItem>
+                        <FormItem name="event" label="Event"
+                                  rules={[
+                                      {required: true, message: 'Event必填', type: 'error'},
+                                  ]}
+                                  help="按文档填写，区分大小写"
+                        >
+                            <Input clearable={true} placeholder="请输入Event，例如wxa_nickname_audit" />
+                        </FormItem>
+                        <FormItem name="path" label="目标路径"
+                                  rules={[
+                                      {required: true, message: '目标路径必填', type: 'error'},
+                                  ]}
+                                  help={!isAuthTab ? '支持填写带参数的录几个，/$APPID$，如/wxacallback/biz/$APPID$/callback，实际接收消息时$APPID$将被替换为公众号或小程序AppId' : undefined}
+                        >
+                            <Input clearable={true} placeholder="请输入目标路径，例如/path/ticket" />
+                        </FormItem>
+                        <FormItem name="port" label="端口"
+                                  rules={[
+                                      {required: true, message: '端口必填', type: 'error'},
+                                  ]}
+                        >
+                            <Input clearable={true} type="number" placeholder="请输入转发端口" />
+                        </FormItem>
+                        <FormItem statusIcon={false}>
+                            <Button theme="primary" type="submit" block>
+                                添加规则
+                            </Button>
+                        </FormItem>
+                    </Form>
+                </div>
             </Dialog>
 
             <Drawer visible={showTestModal} onClose={() => setShowTestModal(false)} confirmBtn={<span />}
-                    cancelBtn={<span />}>
+                    cancelBtn={<span />} destroyOnClose={true} size="medium">
                 <p className="text">测试连通性</p>
                 <p className="desc">说明：只测试连通性，具体的消息处理要求需开发者按照官方文档进行。</p>
                 <div className="normal_flex">
@@ -516,7 +517,7 @@ export default function ForwardMessage() {
                             {`{`}<br />
                                 code: {testResp.code}<br />
                                 msg: {testResp.errorMsg}<br />
-                                data: {testResp.data}<br />
+                                data: <p style={{ whiteSpace: 'pre-wrap' }}>{testResp.data}</p><br />
                             {`}`}
                         </pre>
                     </div>
