@@ -14,7 +14,11 @@ export default function RedirectPage() {
             noNeedCheckLogin: true
         })
         if (resp.code === 0) {
-            window.location.href = resp.data.redirectUrl + window.location.search
+            let redirectUrl = resp.data.redirectUrl
+            if (redirectUrl.includes('#')) {
+                redirectUrl = redirectUrl.replaceAll('changeWxSymbol', '#')
+            }
+            window.location.href = redirectUrl + window.location.search
         }
     }
 

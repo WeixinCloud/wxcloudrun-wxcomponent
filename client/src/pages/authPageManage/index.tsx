@@ -4,7 +4,7 @@ import {copyMessage} from "../../utils/common";
 import {request} from "../../utils/axios";
 import {getComponentInfoRequest, updateComponentInfoRequest} from "../../utils/apis";
 import {useEffect, useState} from "react";
-import {Dialog, Input, MessagePlugin, PopConfirm, Alert} from 'tdesign-react'
+import {Dialog, MessagePlugin, PopConfirm, Alert, Textarea} from 'tdesign-react'
 
 let componentInfo = {}
 
@@ -70,13 +70,17 @@ export default function AuthPageManage() {
                 </div>
                 <div className="normal_flex" style={{ marginTop: '10px' }}>
                     <div className="blue_circle" />
-                    <p className="desc" style={{ margin: '0' }}>支持配置基于微管家进行二次开发的url，需与该微管家域名前缀一致。 当前微管家域名前缀为：{window.location.origin}。</p>
+                    <p className="desc" style={{ margin: '0' }}>支持配置基于微管家进行二次开发的url，需与该微管家域名前缀一致。</p>
+                </div>
+                <div className="normal_flex" style={{ marginTop: '10px' }}>
+                    <div className="blue_circle" />
+                    <p className="desc" style={{ margin: '0' }}>当前微管家域名前缀为：{window.location.origin}。</p>
                 </div>
             </div>
             <div className={styles.line} />
             <div className="normal_flex">
-                <p className={styles.column} style={{ marginTop: '28px' }}>授权回调uri：</p>
-                <p className={styles.column1} style={{ marginTop: '28px' }}>{redirectUrl}</p>
+                <p style={{ width: '100px' }}>授权回调uri：</p>
+                <p style={{ minWidth: '480px', textAlign: 'center', marginRight: '20px' }}>{redirectUrl}</p>
                 <a style={{marginRight: '20px'}} className="a" onClick={openRedirectModal}>{redirectUrl ? '编辑' : '开启'}</a>
                 {
                     redirectUrl &&
@@ -110,11 +114,10 @@ export default function AuthPageManage() {
 
             <Dialog visible={showRedirectModal} onClose={() => setShowRedirectModal(false)} onConfirm={() => updateRedirectUrl()}>
                 <div className="normal_flex">
-                    <p className="desc">授权回调url</p>
-                    <Input onChange={val => setRedirectUrlInput(val as string)} value={redirectUrlInput} placeholder="请输入完整的url，包含协议前缀" />
+                    <p style={{ color: 'black' }}>授权回调url</p>
+                    <Textarea onChange={val => setRedirectUrlInput(val as string)} value={redirectUrlInput} placeholder="请输入完整的url，包含协议前缀" />
                 </div>
             </Dialog>
-
         </div>
     )
 }
