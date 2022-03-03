@@ -34,7 +34,7 @@ const tokenColumn: PrimaryTableCol[] = [
         align: 'center',
         minWidth: 100,
         className: 'row',
-        colKey: 'index',
+        colKey: 'id',
         title: '操作',
         render({ row }) {
             return (
@@ -91,7 +91,7 @@ export default function AuthorizedAccountManage() {
             align: 'center',
             minWidth: 100,
             className: 'row',
-            colKey: 'index',
+            colKey: 'verifyInfo',
             title: '认证类型',
             cell: ({ row }) => {
                 return row.appType === 0 ? miniProgramAuthType[String(row.verifyInfo)] : officialAccountAuthType[String(row.verifyInfo)]
@@ -110,7 +110,7 @@ export default function AuthorizedAccountManage() {
             width: 210,
             minWidth: 210,
             className: 'row',
-            colKey: 'index',
+            colKey: 'id',
             title: '操作',
             render({ row }) {
                 return (
@@ -176,7 +176,7 @@ export default function AuthorizedAccountManage() {
             <Table
                 data={accountList}
                 columns={accountColumn}
-                rowKey="index"
+                rowKey="id"
                 tableLayout="auto"
                 verticalAlign="middle"
                 size="small"
@@ -195,7 +195,7 @@ export default function AuthorizedAccountManage() {
                 <Table
                     data={tokenData}
                     columns={tokenColumn}
-                    rowKey="index"
+                    rowKey="id"
                     tableLayout="auto"
                     verticalAlign="middle"
                     size="small"
