@@ -1,5 +1,5 @@
+FROM centos as centos
 FROM node:12.22.1 as nodeBuilder
-
 # 指定构建过程中的工作目录
 WORKDIR /wxcloudrun-wxcomponent
 
@@ -29,12 +29,12 @@ WORKDIR /wxcloudrun-wxcomponent
 COPY --from=builder /wxcloudrun-wxcomponent/main /wxcloudrun-wxcomponent/
 COPY --from=builder /wxcloudrun-wxcomponent/comm/config/server.conf /wxcloudrun-wxcomponent/comm/config/
 COPY --from=nodeBuilder /wxcloudrun-wxcomponent/client/dist /wxcloudrun-wxcomponent/client/dist
+# 设置时区
+COPY --from=centos  /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo "Asia/Shanghai" > /etc/timezone
 
 # 设置release模式
 ENV GIN_MODE release
-
-# 设置时区
-ENV TZ Asia/Shanghai
 
 # 执行启动命令
 CMD ["/wxcloudrun-wxcomponent/main"]
