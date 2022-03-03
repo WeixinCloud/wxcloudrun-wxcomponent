@@ -243,10 +243,10 @@ export default function ForwardMessage() {
             data: {
                 ...data,
                 data: {
-                    open: true,
                     port: +data.port,
                     path: data.path
-                }
+                },
+                open: true,
             }
         }, (code) => {
             if (code === 1001) {
