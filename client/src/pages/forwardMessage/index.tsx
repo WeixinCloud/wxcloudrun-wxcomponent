@@ -246,7 +246,7 @@ export default function ForwardMessage() {
                     port: +data.port,
                     path: data.path
                 },
-                open: true,
+                open: 1,
             }
         }, (code) => {
             if (code === 1001) {
