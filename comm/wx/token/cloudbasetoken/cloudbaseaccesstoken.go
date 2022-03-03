@@ -10,6 +10,7 @@ import (
 var cloudBaseAccessToken string
 
 const tokenFilePath = "/.tencentcloudbase/wx/cloudbase_access_token"
+const defaultAccessToken = "default-tcb-wx-access-token"
 
 func updateCloudBaseAccessToken() {
 	content, err := ioutil.ReadFile(tokenFilePath)
@@ -23,6 +24,15 @@ func updateCloudBaseAccessToken() {
 func init() {
 	updateCloudBaseAccessToken()
 	go func() {
+		if cloudBaseAccessToken == defaultAccessToken {
+			timer := time.NewTicker(1 * time.Minute)
+			for range timer.C {
+				updateCloudBaseAccessToken()
+				if cloudBaseAccessToken != defaultAccessToken {
+					break
+				}
+			}
+		}
 		timer := time.NewTicker(10 * time.Minute)
 		for range timer.C {
 			updateCloudBaseAccessToken()
