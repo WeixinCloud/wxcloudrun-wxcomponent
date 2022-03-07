@@ -75,7 +75,7 @@ func updateAccessToken(appid string, tokenType int) (string, error) {
 		Type:       tokenType,
 		Appid:      appid,
 		Token:      token,
-		Expiretime: time.Now().Add(2 * time.Hour),
+		Expiretime: time.Now().Add(2 * time.Hour).Add(-time.Minute),
 	})
 	return token, nil
 }
