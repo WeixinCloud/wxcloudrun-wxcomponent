@@ -1,4 +1,4 @@
-FROM node:12.22.1 as nodeBuilder
+FROM node:16.14.0 as nodeBuilder
 # 指定构建过程中的工作目录
 WORKDIR /wxcloudrun-wxcomponent
 
