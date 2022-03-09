@@ -13,7 +13,7 @@ export default function SystemVersion() {
             </div>
             <div className="normal_flex">
                 <p style={{width: '100px'}}>更新时间</p>
-                <p style={{marginRight: '20px'}} className="desc">2022-03-03</p>
+                <p style={{marginRight: '20px'}} className="desc">2022-03-09</p>
             </div>
 
             <p style={{marginTop: '40px'}} className="text">系统更新日志</p>

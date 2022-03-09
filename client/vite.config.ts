@@ -19,7 +19,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'https://wxcomponent-1421032-1304480914.ap-shanghai.run.tcloudbase.com/',
+                target: 'https://xxxxxxxxxx.com/',
                 rewrite: path => path.replace(/^\/api/, ''),
                 changeOrigin: true,
             }

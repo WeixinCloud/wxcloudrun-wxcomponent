@@ -205,7 +205,7 @@ export default function Console() {
             </div>
             <Dialog header="通知中心" visible={showNotice} onConfirm={() => setShowNotice(false)}
                     onClose={() => setShowNotice(false)}>
-                <p>管理工具最新版本为V 2.0.0，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看 2022-02-15</p>
+                <p>管理工具最新版本为V 2.0.0，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看</p>
             </Dialog>
         </div>
     )
