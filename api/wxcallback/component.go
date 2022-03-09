@@ -24,7 +24,7 @@ type wxCallbackComponentRecord struct {
 }
 
 func componentHandler(c *gin.Context) {
-	// add record
+	// 记录到数据库
 	body, _ := ioutil.ReadAll(c.Request.Body)
 	var json wxCallbackComponentRecord
 	if err := binding.JSON.BindBody(body, &json); err != nil {
@@ -45,6 +45,7 @@ func componentHandler(c *gin.Context) {
 		return
 	}
 
+	// 处理授权相关的消息
 	var err error
 	switch json.InfoType {
 	case "component_verify_ticket":
@@ -61,7 +62,18 @@ func componentHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
 		return
 	}
-	c.String(http.StatusOK, "success")
+
+	// 转发到用户配置的地址
+	var proxyOpen bool
+	proxyOpen, err = proxyCallbackMsg(json.InfoType, "", "", string(body), c)
+	if err != nil {
+		log.Error(err)
+		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
+		return
+	}
+	if !proxyOpen {
+		c.String(http.StatusOK, "success")
+	}
 }
 
 type ticketRecord struct {

@@ -1,8 +1,8 @@
 import {Table, Input, PopConfirm, Dialog} from 'tdesign-react';
 import { SearchIcon } from 'tdesign-icons-react'
 import {useEffect, useState} from "react";
-import {get} from "../../utils/axios";
-import {getAuthAccessTokenUrl, getAuthorizedAccountUrl} from "../../utils/apis";
+import {request} from "../../utils/axios";
+import {getAuthAccessTokenRequest, getAuthorizedAccountRequest} from "../../utils/apis";
 import {PrimaryTableCol} from "tdesign-react/es/table/type";
 import moment from "moment";
 import {copyMessage} from "../../utils/common";
@@ -34,7 +34,7 @@ const tokenColumn: PrimaryTableCol[] = [
         align: 'center',
         minWidth: 100,
         className: 'row',
-        colKey: 'index',
+        colKey: 'id',
         title: '操作',
         render({ row }) {
             return (
@@ -91,7 +91,7 @@ export default function AuthorizedAccountManage() {
             align: 'center',
             minWidth: 100,
             className: 'row',
-            colKey: 'index',
+            colKey: 'verifyInfo',
             title: '认证类型',
             cell: ({ row }) => {
                 return row.appType === 0 ? miniProgramAuthType[String(row.verifyInfo)] : officialAccountAuthType[String(row.verifyInfo)]
@@ -110,13 +110,13 @@ export default function AuthorizedAccountManage() {
             width: 210,
             minWidth: 210,
             className: 'row',
-            colKey: 'index',
+            colKey: 'id',
             title: '操作',
             render({ row }) {
                 return (
                     <div style={{ width: '210px' }}>
-                        <PopConfirm content="点击确定生成 token 后会导致上一个 token 被刷新而失效，请谨慎操作" onConfirm={() => createToken(row.appid)}>
-                            <a className="a" style={{ margin: '0 10px' }}>生成token</a>
+                        <PopConfirm content="从数据库获取 token，非重新生成token，不会导致上一个 token 被刷新而失效" onConfirm={() => createToken(row.appid)}>
+                            <a className="a" style={{ margin: '0 10px' }}>获取token</a>
                         </PopConfirm>
                         <a className="a" onClick={() => copyMessage(row.refreshToken)}>复制refresh_toke</a>
                     </div>
@@ -140,9 +140,12 @@ export default function AuthorizedAccountManage() {
         getAccountList()
     }, [currentPage])
 
-    const createToken = async (appid: string) => {
-        const resp = await get({
-            url: `${getAuthAccessTokenUrl}?appid=${appid}`
+    const createToken = async (appId: string) => {
+        const resp = await request({
+            request: getAuthAccessTokenRequest,
+            data: {
+                appid: appId
+            }
         })
         if (resp.code === 0) {
             setTokenData([{
@@ -153,8 +156,13 @@ export default function AuthorizedAccountManage() {
     }
 
     const getAccountList = async () => {
-        const resp = await get({
-            url: `${getAuthorizedAccountUrl}?offset=${(currentPage - 1) * pageSize}&limit=${pageSize}&appid=${appIdInput}`,
+        const resp = await request({
+            request: getAuthorizedAccountRequest,
+            data: {
+                offset: (currentPage - 1) * pageSize,
+                limit: pageSize,
+                appid: appIdInput
+            }
         })
         if (resp.code === 0) {
             setAccountList(resp.data.records)
@@ -168,7 +176,7 @@ export default function AuthorizedAccountManage() {
             <Table
                 data={accountList}
                 columns={accountColumn}
-                rowKey="index"
+                rowKey="id"
                 tableLayout="auto"
                 verticalAlign="middle"
                 size="small"
@@ -187,7 +195,7 @@ export default function AuthorizedAccountManage() {
                 <Table
                     data={tokenData}
                     columns={tokenColumn}
-                    rowKey="index"
+                    rowKey="id"
                     tableLayout="auto"
                     verticalAlign="middle"
                     size="small"

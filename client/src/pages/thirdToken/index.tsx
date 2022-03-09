@@ -2,8 +2,8 @@ import {useState} from 'react'
 import styles from './index.module.less'
 import {Table, Button, PopConfirm} from 'tdesign-react';
 import {PrimaryTableCol} from "tdesign-react/es/table/type";
-import {get} from "../../utils/axios";
-import {getComponentTokenUrl, getTicketUrl} from "../../utils/apis";
+import {request} from "../../utils/axios";
+import {getComponentTokenRequest, getTicketRequest} from "../../utils/apis";
 import moment from "moment";
 import {copyMessage} from "../../utils/common";
 import {routes} from "../../components/Console";
@@ -26,6 +26,7 @@ const componentTokenColumn: PrimaryTableCol[] = [{
     className: 'row',
     colKey: 'expiresTime',
     title: '过期时间',
+    render: ({ row }) => moment(row.expiresTime).format('YYYY-MM-DD HH:mm:ss')
 }, {
     align: 'center',
     width: 100,
@@ -75,8 +76,8 @@ export default function ThirdToken() {
 
     const getComponentVerifyTicket = async () => {
         setIsTicketLoading(true)
-        const resp = await get({
-            url: getTicketUrl
+        const resp = await request({
+            request: getTicketRequest
         })
         if (resp.code === 0) {
             setTicket([{
@@ -88,8 +89,8 @@ export default function ThirdToken() {
 
     const getComponentToken = async () => {
         setIsComponentTokenLoading(true)
-        const resp = await get({
-            url: getComponentTokenUrl
+        const resp = await request({
+            request: getComponentTokenRequest
         })
         if (resp.code === 0) {
             setComponentToken([{

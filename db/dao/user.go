@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/encrypt"
+	"gorm.io/gorm"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db"
@@ -13,16 +14,27 @@ import (
 
 const userTableName = "user"
 
-// AddUserRecord 增加用户
-func AddUserRecord(username string, password string) error {
-	md5Pwd := encrypt.GenerateMd5(password)
-	nowTime := time.Now()
-	newUser := model.UserRecord{Username: username, Password: md5Pwd, CreateTime: nowTime, UpdateTime: nowTime}
-	log.Debug(newUser)
+// AddUserRecordIfNeeded 增加用户，若username重复，则不做任何事
+func AddUserRecordIfNeeded(username string, password string) error {
 	cli := db.Get()
-	if err := cli.Table(userTableName).
-		Create(&newUser).Error; err != nil {
-		return err
+	var record *model.UserRecord
+	if result := cli.Table(userTableName).
+		Where("username = ?", username).
+		First(&record); result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			md5Pwd := encrypt.GenerateMd5(password)
+			nowTime := time.Now()
+			newUser := model.UserRecord{Username: username, Password: md5Pwd, CreateTime: nowTime, UpdateTime: nowTime}
+			log.Debug(newUser)
+			if err := cli.Table(userTableName).
+				Create(&newUser).Error; err != nil {
+				return err
+			}
+			log.Infof("Save User: %v", record)
+		}
+		return result.Error
+	} else {
+		log.Infof("User Already Exists: %v", record)
 	}
 	return nil
 }

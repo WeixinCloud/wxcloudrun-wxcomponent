@@ -11,4 +11,7 @@ var (
 	ErrUserErr       = &JsonResult{Code: 1005, ErrorMsg: "用户更新错误"}
 	ErrAuthErr       = &JsonResult{Code: 1006, ErrorMsg: "登录失败"}
 	ErrEmptyTicket   = &JsonResult{Code: 1007, ErrorMsg: "Ticket为空"}
+	ErrInvalidStatus = &JsonResult{Code: 1008, ErrorMsg: "状态异常"}
+	ErrInvalidType   = &JsonResult{Code: 1009, ErrorMsg: "类型错误"}
+	ErrRequestErr    = &JsonResult{Code: 1010, ErrorMsg: "请求错误"}
 )

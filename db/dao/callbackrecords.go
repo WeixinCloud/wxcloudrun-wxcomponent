@@ -31,12 +31,12 @@ func GetComponentCallBackRecordList(startTime time.Time, endTime time.Time,
 	infoType string, offset int, limit int) ([]*model.WxCallbackComponentRecord, int64, error) {
 	var records = []*model.WxCallbackComponentRecord{}
 	cli := db.Get()
-	result := cli.Table(componentTableName).Where("receivetime BETWEEN ? AND ?", startTime, endTime)
+	result := cli.Table(componentTableName).Where("receivetime between ? and ?", startTime, endTime)
 	if infoType != "" {
 		result = result.Where("infotype = ?", infoType)
 	}
 	var count int64
-	result = result.Count(&count).Offset(offset).Limit(limit).Find(&records)
+	result = result.Count(&count).Order("receivetime desc").Offset(offset).Limit(limit).Find(&records)
 	return records, count, result.Error
 }
 
@@ -59,7 +59,7 @@ func GetBizCallBackRecordList(startTime time.Time, endTime time.Time, appid stri
 	msgType string, event string, offset int, limit int) ([]*model.WxCallbackBizRecord, int64, error) {
 	var records = []*model.WxCallbackBizRecord{}
 	cli := db.Get()
-	result := cli.Table(bizTableName).Where("receivetime BETWEEN ? AND ?", startTime, endTime)
+	result := cli.Table(bizTableName).Where("receivetime between ? and ?", startTime, endTime)
 	if appid != "" {
 		result = result.Where("appid = ?", appid)
 	}
@@ -70,6 +70,6 @@ func GetBizCallBackRecordList(startTime time.Time, endTime time.Time, appid stri
 		result = result.Where("event = ?", event)
 	}
 	var count int64
-	result = result.Count(&count).Offset(offset).Limit(limit).Find(&records)
+	result = result.Count(&count).Order("receivetime desc").Offset(offset).Limit(limit).Find(&records)
 	return records, count, result.Error
 }

@@ -1,4 +1,4 @@
-package token
+package wxtoken
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/httputils"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	wxbase "github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/base"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
 )
 
 type componentAccessTokenReq struct {
@@ -20,8 +21,12 @@ type componentAccessTokenResp struct {
 	ExpiresIn            uint64 `json:"expires_in"`
 }
 
-// GetNewComponentAccessToken 获取新的ComponentAccessToken
-func GetNewComponentAccessToken() (string, error) {
+// GetComponentAccessToken 获取ComponentAccessToken
+func GetComponentAccessToken() (string, error) {
+	return getAccessToken(wxbase.GetAppid(), model.WXTOKENTYPE_OWN)
+}
+
+func getNewComponentAccessToken() (string, error) {
 	ticket := wxbase.GetTicket()
 	if len(ticket) == 0 {
 		return "", errors.New("empty ticket")

@@ -29,7 +29,7 @@ type getWxBizRecordsReq struct {
 	Limit     int    `form:"limit"`
 }
 
-func wxComponentRecordsHandler(c *gin.Context) {
+func getWxComponentRecordsHandler(c *gin.Context) {
 	var req getWxComponentRecordsReq
 	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(http.StatusOK, errno.ErrInvalidParam.WithData(err.Error()))
@@ -50,7 +50,7 @@ func wxComponentRecordsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, errno.OK.WithData(gin.H{"total": total, "records": records}))
 }
 
-func wxBizRecordsHandler(c *gin.Context) {
+func getWxBizRecordsHandler(c *gin.Context) {
 	var req getWxBizRecordsReq
 	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(http.StatusOK, errno.ErrInvalidParam.WithData(err.Error()))
@@ -71,7 +71,7 @@ func wxBizRecordsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, errno.OK.WithData(gin.H{"total": total, "records": records}))
 }
 
-func wxCallBackConfigHandler(c *gin.Context) {
+func getWxCallBackConfigHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, errno.OK.WithData(gin.H{
 		"envId":         wxbase.GetEnvId(),
 		"service":       wxbase.GetService(),

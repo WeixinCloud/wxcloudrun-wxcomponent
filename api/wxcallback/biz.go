@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/errno"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/dao"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
@@ -21,7 +22,7 @@ type wxCallbackBizRecord struct {
 }
 
 func bizHandler(c *gin.Context) {
-	// add record
+	// 记录到数据库
 	body, _ := ioutil.ReadAll(c.Request.Body)
 	var json wxCallbackBizRecord
 	if err := binding.JSON.BindBody(body, &json); err != nil {
@@ -44,5 +45,15 @@ func bizHandler(c *gin.Context) {
 		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
 		return
 	}
-	c.String(http.StatusOK, "success")
+
+	// 转发到用户配置的地址
+	proxyOpen, err := proxyCallbackMsg("", json.MsgType, json.Event, string(body), c)
+	if err != nil {
+		log.Error(err)
+		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
+		return
+	}
+	if !proxyOpen {
+		c.String(http.StatusOK, "success")
+	}
 }

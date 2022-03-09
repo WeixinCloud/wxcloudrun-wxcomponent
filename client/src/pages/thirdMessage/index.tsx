@@ -3,8 +3,8 @@ import { Tabs, Button, DatePicker, Table, Input, MessagePlugin } from 'tdesign-r
 import {PrimaryTableCol} from "tdesign-react/es/table/type";
 import {useEffect, useState} from "react";
 import moment from 'moment'
-import {get} from "../../utils/axios";
-import {getAuthMessageUrl, getMessageConfigUrl, getNormalMessageUrl} from "../../utils/apis";
+import {request} from "../../utils/axios";
+import {getAuthMessageRequest, getMessageConfigRequest, getNormalMessageRequest} from "../../utils/apis";
 
 const { TabPanel } = Tabs;
 
@@ -121,7 +121,7 @@ export default function ThirdMessage() {
 
     const [msgTypeInput, setMsgTypeInput] = useState('')
     const [eventInput, setEventInput] = useState('')
-    const [toUserNameInput, setToUserNameInput] = useState('')
+    const [appIdInput, setAppIdInput] = useState('')
     const [normalTimeInput, setNormalTimeInput] = useState<[string, string]>(defaultTime)
 
     const [messageConfig, setMessageConfig] = useState({
@@ -142,13 +142,13 @@ export default function ThirdMessage() {
         setAuthTimeInput(defaultTime)
         setMsgTypeInput('')
         setEventInput('')
-        setToUserNameInput('')
+        setAppIdInput('')
         setNormalTimeInput(defaultTime)
     }
 
     const getMessageConfig = async () => {
-        const resp = await get({
-            url: getMessageConfigUrl
+        const resp = await request({
+            request: getMessageConfigRequest
         })
         if (resp.code === 0) {
             setMessageConfig(resp.data)
@@ -169,8 +169,15 @@ export default function ThirdMessage() {
                     MessagePlugin.error('请选择推送时间范围', 2000)
                     break;
                 }
-                const resp = await get({
-                    url: `${getAuthMessageUrl}?infoType=${infoTypeInput}&limit=${pageSize}&offset=${(authPage -1) * pageSize}&startTime=${moment(authTimeInput[0]).valueOf() / 1000}&endTime=${moment(authTimeInput[1]).valueOf() / 1000}`
+                const resp = await request({
+                    request: getAuthMessageRequest,
+                    data: {
+                        infoType: infoTypeInput,
+                        limit: pageSize,
+                        offset: (authPage -1) * pageSize,
+                        startTime: moment(authTimeInput[0]).valueOf() / 1000,
+                        endTime: moment(authTimeInput[1]).valueOf() / 1000
+                    }
                 })
                 if (resp.code === 0) {
                     setAuthData(resp.data.records)
@@ -183,8 +190,17 @@ export default function ThirdMessage() {
                     MessagePlugin.error('请选择推送时间范围', 2000)
                     break;
                 }
-                const resp = await get({
-                    url: `${getNormalMessageUrl}?appid=${toUserNameInput}&event=${eventInput}&msgType=${msgTypeInput}&limit=${pageSize}&offset=${(authPage -1) * pageSize}&startTime=${moment(normalTimeInput[0]).valueOf() / 1000}&endTime=${moment(normalTimeInput[1]).valueOf() / 1000}`
+                const resp = await request({
+                    request: getNormalMessageRequest,
+                    data: {
+                        appid: appIdInput,
+                        event: eventInput,
+                        msgType: msgTypeInput,
+                        limit: pageSize,
+                        offset: (authPage -1) * pageSize,
+                        startTime: moment(normalTimeInput[0]).valueOf() / 1000,
+                        endTime: moment(normalTimeInput[1]).valueOf() / 1000
+                    }
                 })
                 if (resp.code === 0) {
                     setNormalData(resp.data.records)
@@ -267,8 +283,8 @@ export default function ThirdMessage() {
                             <Input value={eventInput} onChange={(val) => setEventInput(val as string)} clearable style={{ width: '120px', marginRight: '20px' }} />
                         </div>
                         <div className="normal_flex">
-                            <p style={{ marginRight: '10px' }}>ToUserName</p>
-                            <Input value={toUserNameInput} onChange={(val) => setToUserNameInput(val as string)} clearable style={{ width: '140px', marginRight: '20px' }} />
+                            <p style={{ marginRight: '10px' }}>AppId</p>
+                            <Input value={appIdInput} onChange={(val) => setAppIdInput(val as string)} clearable style={{ width: '140px', marginRight: '20px' }} />
                         </div>
                         <div className="normal_flex">
                             <p style={{ marginRight: '10px' }}>推送时间</p>

@@ -4,7 +4,7 @@ import "time"
 
 // Authorizer 授权账号
 type Authorizer struct {
-	ID            int       `gorm:"primary_key"`
+	ID            int       `gorm:"column:id;primary_key" json:"id"`
 	Appid         string    `gorm:"column:appid" json:"appid"`
 	AppType       int       `gorm:"column:apptype" json:"appType"`
 	ServiceType   int       `gorm:"column:servicetype" json:"serviceType"`
