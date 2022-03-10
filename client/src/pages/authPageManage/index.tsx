@@ -100,7 +100,7 @@ export default function AuthPageManage() {
             </div>
             <div className={styles.line} />
             <div className="normal_flex">
-                <p className={styles.column} style={{ marginTop: '28px' }}>PC 版授权链接</p>
+                <p className={styles.column}>PC 版授权链接</p>
                 <p className={styles.column1}>在电脑浏览器里打开后，使用微信扫码</p>
                 <a style={{marginRight: '20px'}} className="a"
                    onClick={() => copyMessage(`${window.location.origin}/#${routes.authorize.path}`)}>复制链接</a>
