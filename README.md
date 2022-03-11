@@ -78,6 +78,8 @@ go run main
 | user                  |
 | wxcallback_biz        |
 | wxcallback_component  |
+| wxcallback_rules      |
+| wxtoken               |
 +-----------------------+
 ```
 - authorizers: 授权账号信息
@@ -85,3 +87,5 @@ go run main
 - user: 用户表
 - wxcallback_biz: 推送给消息与事件URL的消息
 - wxcallback_component: 推送给授权事件URL的消息
+- wxcallback_rules: 消息转发规则
+- wxtoken: component_access_token和authorizer_access_token
