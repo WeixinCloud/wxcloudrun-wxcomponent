@@ -1,8 +1,13 @@
 # wxcloudrun-wxcomponent
+[![GitHub license](https://img.shields.io/github/license/WeixinCloud/wxcloudrun-wxcomponent)](https://github.com/WeixinCloud/wxcloudrun-wxcomponent)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/WeixinCloud/wxcloudrun-wxcomponent)
+
 微信云托管 微信第三方平台管理工具模版
 
 ## 功能介绍
-此项目提供第三方平台的后端服务以及第三方平台管理工具。该镜像可一键部署到微信云托管，分钟级别即可完成第三方平台开发环境搭建以及第三方平台管理工具部署。
+此项目提供第三方平台的后端服务以及第三方平台管理工具。该镜像可一键部署到微信云托管，分钟级别即可完成第三方平台开发环境搭建以及第三方平台管理工具部署。详情参考官方文档：[服务商微管家介绍](https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/product/management-tools.html)。
+
+![index](https://res.wx.qq.com/op_res/BF2B0NQ2bKt-rJQL--cB3fUuCyllmnvJdFT57k786XuTE5UJQh4x8KjxiaGsg48qsqLtlP1kCZcr7E48DKq2xg)
 
 #### 第三方平台推送消息
 微信第三方平台需要填写两个URL用于接受官方推送的消息，详情参考官方文档：[创建与配置第三方平台准备工作](https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/operation/thirdparty/prepare.html)。
@@ -22,6 +27,8 @@
 ├── api                                 // 后端api
 │   ├── admin                           // 管理工具，需管理员登录
 │   ├── authpage                        // 授权页面，无鉴权
+│   ├── innerservice                    // 提供内部服务
+│   ├── proxy                           // 代理
 │   └── wxcallback                      // 接收微信消息
 ├── client                              // 前端
 │   ├── dist                            // 打包结果
@@ -50,6 +57,7 @@
 ├── go.sum
 ├── main.go
 ├── middleware                          // 中间件
+│   ├── innerservice.go                 // 内部服务
 │   ├── jwt.go                          // jwt
 │   ├── log.go                          // 日志
 │   └── wxsource.go                     // 判断是否为微信来源
@@ -89,3 +97,7 @@ go run main
 - wxcallback_component: 推送给授权事件URL的消息
 - wxcallback_rules: 消息转发规则
 - wxtoken: component_access_token和authorizer_access_token
+
+## License
+
+[MIT](./LICENSE)
