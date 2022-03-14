@@ -318,6 +318,10 @@ export default function ForwardMessage() {
                 id: testRuleId,
             }
         }, () => null)
+        if (resp.code !== 0 && resp.code !== 1010) {
+            MessagePlugin.error('系统错误，请稍后重试')
+            return
+        }
         setTestResp(resp as {
             code: number
             errorMsg: string
@@ -455,10 +459,7 @@ export default function ForwardMessage() {
                             <Input clearable={true} placeholder="请输入MsgType，例如Event、Text" />
                         </FormItem>
                         <FormItem name="event" label="Event"
-                                  rules={[
-                                      {required: true, message: 'Event必填', type: 'error'},
-                                  ]}
-                                  help="按文档填写，区分大小写"
+                                  help="当MsgType为Event时必填，按文档填写，区分大小写"
                         >
                             <Input clearable={true} placeholder="请输入Event，例如wxa_nickname_audit" />
                         </FormItem>
@@ -513,13 +514,7 @@ export default function ForwardMessage() {
                     &&
                     <div>
                         <p>接口返回值：</p>
-                        <pre>
-                            {`{`}<br />
-                                code: {testResp.code}<br />
-                                msg: {testResp.errorMsg}<br />
-                                data: <p style={{ whiteSpace: 'pre-wrap' }}>{testResp.data}</p><br />
-                            {`}`}
-                        </pre>
+                        <p style={{ whiteSpace: 'pre-wrap', margin: 0, padding: '20px', backgroundColor: 'rgba(0,0,0,0.1)' }}>{testResp.data}</p>
                     </div>
                 }
             </Drawer>

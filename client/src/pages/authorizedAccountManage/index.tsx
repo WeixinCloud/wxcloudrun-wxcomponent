@@ -118,7 +118,7 @@ export default function AuthorizedAccountManage() {
                         <PopConfirm content="从数据库获取 token，非重新生成token，不会导致上一个 token 被刷新而失效" onConfirm={() => createToken(row.appid)}>
                             <a className="a" style={{ margin: '0 10px' }}>获取token</a>
                         </PopConfirm>
-                        <a className="a" onClick={() => copyMessage(row.refreshToken)}>复制refresh_toke</a>
+                        <a className="a" onClick={() => copyMessage(row.refreshToken)}>复制refresh_token</a>
                     </div>
                 );
             },
