@@ -32,12 +32,13 @@ COPY --from=nodeBuilder /wxcloudrun-wxcomponent/client/dist /wxcloudrun-wxcompon
 
 # 设置时区
 RUN apk --update add tzdata && \
-    apk -U add --no-cache ca-certificate && \
-    update-ca-certificates && \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*
+
+RUN apk add --no-cache ca-certificates && \
+    update-ca-certificates
 
 # 设置release模式
 ENV GIN_MODE release
