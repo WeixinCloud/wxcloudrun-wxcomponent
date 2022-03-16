@@ -29,10 +29,10 @@ COPY --from=builder /wxcloudrun-wxcomponent/main /wxcloudrun-wxcomponent/
 COPY --from=builder /wxcloudrun-wxcomponent/comm/config/server.conf /wxcloudrun-wxcomponent/comm/config/
 COPY --from=nodeBuilder /wxcloudrun-wxcomponent/client/dist /wxcloudrun-wxcomponent/client/dist
 
-RUN apk add --no-cache ca-certificate
 
 # 设置时区
 RUN apk --update add tzdata && \
+    apk add --no-cache ca-certificate \
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
     apk del tzdata && \
