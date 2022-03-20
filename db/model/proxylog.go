@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// UserRecord 用户信息
+// ProxyLog 微信代理http请求记录
 type ProxyLog struct {
 	ID         int       `gorm:"column:id;primary_key" json:"id"` // 唯一ID
 	Method     string    `gorm:"column:method" json:"method"`     // http method

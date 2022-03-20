@@ -49,7 +49,7 @@ func Routers(e *gin.RouterGroup) {
 	g.GET("/proxy", getProxyHandler)
 	g.POST("/proxy", updateProxyHandler)
 
-	//
+	// 微信代理接口
 	g.GET("/wx-proxy", getWxProxyHandler)
 	g.POST("/wx-proxy", postWxProxyHandler)
 }

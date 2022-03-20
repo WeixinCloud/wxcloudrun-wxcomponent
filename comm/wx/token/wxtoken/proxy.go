@@ -21,7 +21,7 @@ func WxProxyGet(appid string, uri string, ttype string, user *utils.Claims) (res
 		return
 	}
 
-	// 请示微信接口
+	// 请求微信接口
 	resp, err := proxyGet(url)
 	if err != nil {
 		return
@@ -44,7 +44,7 @@ func WxProxyPost(appid string, uri string, ttype string, data []byte, user *util
 		return
 	}
 
-	// 请示微信接口
+	// 请求微信接口
 	resp, err := proxyPost(url, data)
 	if err != nil {
 		return
