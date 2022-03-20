@@ -48,4 +48,8 @@ func Routers(e *gin.RouterGroup) {
 	// 转发设置
 	g.GET("/proxy", getProxyHandler)
 	g.POST("/proxy", updateProxyHandler)
+
+	//
+	g.GET("/wx-proxy", getWxProxyHandler)
+	g.POST("/wx-proxy", postWxProxyHandler)
 }

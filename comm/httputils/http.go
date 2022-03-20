@@ -74,3 +74,20 @@ func Post(url string, data interface{}, contentType string) ([]byte, error) {
 	log.Debugf("http resp: %s", result)
 	return result, nil
 }
+
+func Get(url string) ([]byte, error) {
+	client := &http.Client{Timeout: 5 * time.Second}
+	log.Debugf("http get url: %s", url)
+	resp, err := client.Get(url)
+	if err != nil {
+		return []byte{}, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return []byte{}, fmt.Errorf("http code: %d", resp.StatusCode)
+	}
+
+	result, _ := ioutil.ReadAll(resp.Body)
+	log.Debugf("http get resp: %s", result)
+	return result, nil
+}
