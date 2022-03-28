@@ -134,8 +134,11 @@ export default function ThirdMessage() {
 
     useEffect(() => {
         getMessageConfig()
-        getTableData()
     }, [])
+
+    useEffect(() => {
+        getTableData()
+    }, [authPage, normalPage])
 
     const initParams = () => {
         setInfoTypeInput('')
@@ -176,7 +179,7 @@ export default function ThirdMessage() {
                         limit: pageSize,
                         offset: (authPage -1) * pageSize,
                         startTime: moment(authTimeInput[0]).valueOf() / 1000,
-                        endTime: moment(authTimeInput[1]).valueOf() / 1000
+                        endTime: moment(authTimeInput[1]).add(23, 'hours').add(59, 'minutes').add(59, 'seconds').valueOf() / 1000
                     }
                 })
                 if (resp.code === 0) {
@@ -268,6 +271,7 @@ export default function ThirdMessage() {
                             total: authDataTotal,
                             current: authPage,
                             showJumper: true,
+                            pageSizeOptions: [15],
                             onCurrentChange:(current) => setAuthPage(current),
                         }}
                     />
@@ -307,6 +311,7 @@ export default function ThirdMessage() {
                             total: normalDataTotal,
                             current: normalPage,
                             showJumper: true,
+                            pageSizeOptions: [15],
                             onCurrentChange:(current) => setNormalPage(current),
                         }}
                     />

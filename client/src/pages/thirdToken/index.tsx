@@ -122,7 +122,7 @@ export default function ThirdToken() {
                 rowKey="ticket"
                 tableLayout="auto"
                 verticalAlign="middle"
-                size="small"// 与pagination对齐
+                size="small"
             />
 
             <p style={{marginTop: '40px'}} className="text">component_access_token 介绍</p>
@@ -145,7 +145,7 @@ export default function ThirdToken() {
                 rowKey="componentToken"
                 tableLayout="auto"
                 verticalAlign="middle"
-                size="small"// 与pagination对齐
+                size="small"
             />
 
         </div>
