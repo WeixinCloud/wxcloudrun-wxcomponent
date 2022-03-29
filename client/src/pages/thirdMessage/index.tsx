@@ -102,7 +102,7 @@ export default function ThirdMessage() {
 
     const pageSize = 15
 
-    const defaultTime: [string, string] = [moment().subtract(2, 'hours').format('YYYY-MM-DD HH:mm:ss'), moment().format('YYYY-MM-DD HH:mm:ss')]
+    const defaultTime: [string, string] = [moment().startOf('day').format('YYYY-MM-DD HH:mm:ss'), moment().endOf('day').format('YYYY-MM-DD HH:mm:ss')]
 
     const [selectedTab, setSelectedTab] = useState<string | number>(tabs[0].value)
     const [isTableLoading, setIsTableLoading] = useState<boolean>(false)
@@ -179,7 +179,7 @@ export default function ThirdMessage() {
                         limit: pageSize,
                         offset: (authPage -1) * pageSize,
                         startTime: moment(authTimeInput[0]).valueOf() / 1000,
-                        endTime: moment(authTimeInput[1]).add(23, 'hours').add(59, 'minutes').add(59, 'seconds').valueOf() / 1000
+                        endTime: parseInt(String(moment(authTimeInput[1]).endOf('day').valueOf() / 1000))
                     }
                 })
                 if (resp.code === 0) {
@@ -270,7 +270,6 @@ export default function ThirdMessage() {
                             pageSize,
                             total: authDataTotal,
                             current: authPage,
-                            showJumper: true,
                             pageSizeOptions: [15],
                             onCurrentChange:(current) => setAuthPage(current),
                         }}
@@ -310,7 +309,6 @@ export default function ThirdMessage() {
                             pageSize,
                             total: normalDataTotal,
                             current: normalPage,
-                            showJumper: true,
                             pageSizeOptions: [15],
                             onCurrentChange:(current) => setNormalPage(current),
                         }}

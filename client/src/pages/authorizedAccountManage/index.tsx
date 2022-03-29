@@ -186,7 +186,6 @@ export default function AuthorizedAccountManage() {
                     pageSize,
                     total: accountTotal,
                     current: currentPage,
-                    showJumper: true,
                     pageSizeOptions: [15],
                     onCurrentChange: setCurrentPage,
                 }}
