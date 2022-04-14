@@ -4,7 +4,7 @@ import "time"
 
 // WxCallbackRule 回调消息转发规则
 type WxCallbackRule struct {
-	ID         int32     `gorm:"column:id;primary_key" json:"id"`
+	ID         int32     `gorm:"column:id;primaryKey" json:"id"`
 	Name       string    `gorm:"column:name" json:"name"`
 	InfoType   string    `gorm:"column:infotype" json:"infoType"`
 	MsgType    string    `gorm:"column:msgtype" json:"msgType"`

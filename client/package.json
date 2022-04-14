@@ -1,31 +1,36 @@
 {
-  "name": "third-platform-manage-tools",
-  "version": "2.0.0",
-  "scripts": {
-    "dev": "vite",
-    "start": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview"
-  },
-  "dependencies": {
-    "axios": "^0.24.0",
-    "js-md5": "^0.7.3",
-    "less": "^4.1.2",
-    "moment": "^2.29.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "6",
-    "tdesign-icons-react": "^0.0.5",
-    "tdesign-react": "0.22.1"
-  },
-  "devDependencies": {
-    "@types/js-md5": "^0.4.3",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/validator": "^13.7.1",
-    "@vitejs/plugin-react": "^1.0.0",
-    "typescript": "^4.3.2",
-    "vite": "^2.6.4",
-    "csstype": "3.0.10"
-  }
+    "name": "third-platform-manage-tools",
+    "version": "2.1.0",
+    "scripts": {
+        "dev": "vite",
+        "start": "vite",
+        "build": "tsc && vite build",
+        "serve": "vite preview",
+        "check-host": "node ./scripts/checkHost.mjs",
+        "prepare": "cd .. && husky install"
+    },
+    "dependencies": {
+        "axios": "^0.24.0",
+        "js-md5": "^0.7.3",
+        "less": "^4.1.2",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-router-dom": "6",
+        "tdesign-icons-react": "^0.0.5",
+        "tdesign-react": "0.22.1"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.181",
+        "@types/js-md5": "^0.4.3",
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0",
+        "@types/validator": "^13.7.1",
+        "@vitejs/plugin-react": "^1.0.0",
+        "csstype": "3.0.10",
+        "husky": "^7.0.4",
+        "typescript": "^4.3.2",
+        "vite": "^2.6.4"
+    }
 }

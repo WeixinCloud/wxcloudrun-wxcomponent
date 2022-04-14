@@ -9,11 +9,11 @@ export default function SystemVersion() {
             <div className={styles.line} />
             <div className="normal_flex">
                 <p style={{width: '100px'}}>当前版本</p>
-                <p style={{marginRight: '20px'}} className="desc">V 2.0.0</p>
+                <p style={{marginRight: '20px'}} className="desc">V 2.1.0</p>
             </div>
             <div className="normal_flex">
                 <p style={{width: '100px'}}>更新时间</p>
-                <p style={{marginRight: '20px'}} className="desc">2022-03-09</p>
+                <p style={{marginRight: '20px'}} className="desc">2022-04-14</p>
             </div>
 
             <p style={{marginTop: '40px'}} className="text">系统更新日志</p>

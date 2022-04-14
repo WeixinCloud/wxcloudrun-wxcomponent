@@ -3,6 +3,7 @@ package dao
 import (
 	"time"
 
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
 	"gorm.io/gorm/clause"
@@ -17,6 +18,7 @@ func CreateOrUpdateAuthorizerRecord(record *model.Authorizer) error {
 	if err = cli.Table(authorizerTableName).Clauses(clause.OnConflict{
 		UpdateAll: true,
 	}).Create(record).Error; err != nil {
+		log.Error(err)
 		return err
 	}
 	return nil
@@ -30,6 +32,7 @@ func BatchCreateOrUpdateAuthorizerRecord(record *[]model.Authorizer) error {
 	if err = cli.Table(authorizerTableName).Clauses(clause.OnConflict{
 		UpdateAll: true,
 	}).Create(record).Error; err != nil {
+		log.Error(err)
 		return err
 	}
 	return nil
@@ -43,6 +46,7 @@ func ClearAuthorizerRecordsBefore(time time.Time) error {
 	if err = cli.Table(authorizerTableName).
 		Where("updatetime < ?", time).
 		Delete(model.Authorizer{}).Error; err != nil {
+		log.Error(err)
 		return err
 	}
 	return nil
@@ -68,7 +72,22 @@ func DelAuthorizerRecord(appid string) error {
 	cli := db.Get()
 	if err = cli.Table(authorizerTableName).
 		Where("appid = ?", appid).Delete(model.Authorizer{}).Error; err != nil {
+		log.Error(err)
 		return err
 	}
 	return nil
+}
+
+// GetDevWeAppRecords 获取代开发小程序
+func GetDevWeAppRecords(offset int, limit int, appid string) ([]*model.Authorizer, int64, error) {
+	var records = []*model.Authorizer{}
+	cli := db.Get()
+	result := cli.Table(authorizerTableName)
+	var count int64
+	result = result.Where("apptype = ? AND funcinfo LIKE ?", 0, "%18%")
+	if len(appid) != 0 {
+		result = result.Where("appid = ?", appid)
+	}
+	result = result.Count(&count).Offset(offset).Limit(limit).Find(&records)
+	return records, count, result.Error
 }

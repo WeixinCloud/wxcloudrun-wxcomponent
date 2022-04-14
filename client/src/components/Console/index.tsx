@@ -64,7 +64,17 @@ export const routes = {
     redirectPage: {
         label: '授权回调跳转页',
         path: '/redirectPage'
-    }
+    },
+    miniProgramVersion: {
+        label: '版本管理',
+        path: '/authorizedAccountManage/miniProgramVersion',
+        showPath: '/authorizedAccountManage'
+    },
+    submitAudit: {
+        label: '提交审核',
+        path: '/authorizedAccountManage/submitAudit',
+        showPath: '/authorizedAccountManage'
+    },
 }
 
 type IMenuItem = {
@@ -89,7 +99,10 @@ const menuList: IMenuList = [{
 }, {
     label: '管家中心',
     icon: <Icon.AppIcon />,
-    item: [routes.authPageManage, routes.authorizedAccountManage]
+    item: [routes.authPageManage, {
+        ...routes.authorizedAccountManage,
+        hideItem: [routes.submitAudit, routes.miniProgramVersion],
+    }]
 }, {
     label: '开发辅助',
     icon: <Icon.ViewListIcon />,
@@ -145,7 +158,11 @@ export default function Console() {
         } else {
             if (menu.path === path) {
                 if (menu.showPath) {
-                    return <p className={styles.detail_header_title}><a href={`#${menu.showPath}`} className={`${styles.detail_header_title} a`}>{father?.label}</a> / {menu.label}</p>
+                    return <div className="normal_flex" style={{ alignItems: 'center' }}>
+                        <Icon.ArrowLeftIcon style={{ marginRight: '12px' }} className="a" size="26px" onClick={() => window.history.back()} />
+                        {/*<p style={{ lineHeight: '28px' }} className={styles.detail_header_title}><a href={`#${menu.showPath}`} className={`${styles.detail_header_title} a`}>{father?.label}</a> / {menu.label}</p>*/}
+                        <p style={{ lineHeight: '28px' }} className={styles.detail_header_title}>{father?.label} / {menu.label}</p>
+                    </div>
                 }
                 return <p className={styles.detail_header_title}>{menu.label}</p>
             }
@@ -205,7 +222,7 @@ export default function Console() {
             </div>
             <Dialog header="通知中心" visible={showNotice} onConfirm={() => setShowNotice(false)}
                     onClose={() => setShowNotice(false)}>
-                <p>管理工具最新版本为V 2.0.0，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看</p>
+                <p>管理工具最新版本为V 2.1.0，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看</p>
             </Dialog>
         </div>
     )

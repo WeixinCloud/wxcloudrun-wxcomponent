@@ -1,10 +1,8 @@
-package wxtoken
+package wx
 
 import (
-	"encoding/json"
 	"errors"
 
-	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/httputils"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	wxbase "github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/base"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/dao"
@@ -12,19 +10,19 @@ import (
 )
 
 type authorizerAccessTokenReq struct {
-	ComponentAppid         string `json:"component_appid"`
-	AuthorizerAppid        string `json:"authorizer_appid"`
-	AuthorizerRefreshToken string `json:"authorizer_refresh_token"`
+	ComponentAppid         string `wx:"component_appid"`
+	AuthorizerAppid        string `wx:"authorizer_appid"`
+	AuthorizerRefreshToken string `wx:"authorizer_refresh_token"`
 }
 
 type authorizerAccessTokenResp struct {
-	AuthorizerAccessToken string `json:"authorizer_access_token"`
-	ExpiresIn             uint64 `json:"expires_in"`
+	AuthorizerAccessToken string `wx:"authorizer_access_token"`
+	ExpiresIn             uint64 `wx:"expires_in"`
 }
 
 // GetAuthorizerAccessToken 获取AuthorizerAccessToken
 func GetAuthorizerAccessToken(appid string) (string, error) {
-	return getAccessToken(appid, model.WXTOKENTYPE_AUTH)
+	return getAccessTokenWithRetry(appid, model.WXTOKENTYPE_AUTH)
 }
 
 func getNewAuthorizerAccessToken(appid string) (string, error) {
@@ -40,12 +38,12 @@ func getNewAuthorizerAccessToken(appid string) (string, error) {
 		AuthorizerAppid:        appid,
 		AuthorizerRefreshToken: records[0].RefreshToken,
 	}
-	_, respbody, err := httputils.PostWxJson("/cgi-bin/component/api_authorizer_token", req, true)
+	var resp authorizerAccessTokenResp
+	_, body, err := PostWxJsonWithComponentToken("/cgi-bin/component/api_authorizer_token", "", req)
 	if err != nil {
 		return "", err
 	}
-	var resp authorizerAccessTokenResp
-	if err := json.Unmarshal(respbody, &resp); err != nil {
+	if err := WxJson.Unmarshal(body, &resp); err != nil {
 		log.Errorf("Unmarshal err, %v", err)
 		return "", err
 	}

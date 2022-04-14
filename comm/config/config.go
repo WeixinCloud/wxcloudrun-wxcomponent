@@ -16,19 +16,34 @@ type Server struct {
 	AesKey        string
 }
 
+// WxApi 配置结构体
+type WxApi struct {
+	UseCloudBaseAccessToken bool
+	UseComponentAccessToken bool
+	UseHttps                bool
+}
+
+// Comm 常规配置结构体
+type Comm struct {
+	Version string
+}
+
 var ServerConf = &Server{}
+var CommConf = &Comm{}
+var WxApiConf = &WxApi{}
 
 var cfg *ini.File
 
-// Init 初始化
-func Init() error {
+func init() {
 	var err error
 	cfg, err = ini.Load("comm/config/server.conf")
 	if err != nil {
 		log.Errorf("load server.conf': %v", err)
-		return err
+		return
 	}
 	mapTo("server", ServerConf)
+	mapTo("comm", CommConf)
+	mapTo("wxapi", WxApiConf)
 	if ServerConf.AesKey == "" {
 		ServerConf.AesKey = encrypt.GenerateMd5(os.Getenv("MYSQL_PASSWORD"))
 	}
@@ -36,7 +51,6 @@ func Init() error {
 		ServerConf.JwtSecret = encrypt.GenerateMd5(os.Getenv("MYSQL_PASSWORD"))
 	}
 	log.Info(ServerConf)
-	return nil
 }
 
 func mapTo(section string, v interface{}) {

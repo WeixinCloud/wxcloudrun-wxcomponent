@@ -1,5 +1,6 @@
 import {MessagePlugin} from "tdesign-react";
 
+// TODO: ie的复制有问题，要看下啥报错，然后对应提示下用chrome
 export const copyMessage = (msg: string) => {
     navigator.clipboard.writeText(msg).then(() => {
         MessagePlugin.success('复制成功', 2000)

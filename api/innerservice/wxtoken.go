@@ -2,13 +2,11 @@ package innerservice
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/errno"
-	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx"
 
 	wxbase "github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/base"
-	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/token/wxtoken"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,18 +22,7 @@ func GetTicketHandler(c *gin.Context) {
 
 // GetComponentAccessTokenHandler 获取ComponentAccessToken
 func GetComponentAccessTokenHandler(c *gin.Context) {
-	var token string
-	var err error
-	for i := 0; i < 3; i++ {
-		if token, err = wxtoken.GetComponentAccessToken(); err != nil {
-			log.Error(err)
-			if err.Error() == "lock fail" {
-				time.Sleep(200 * time.Millisecond)
-				continue
-			}
-		}
-		break
-	}
+	token, err := wx.GetComponentAccessToken()
 	if err != nil {
 		if err.Error() == "empty ticket" {
 			c.JSON(http.StatusOK, errno.ErrEmptyTicket)
@@ -49,18 +36,7 @@ func GetComponentAccessTokenHandler(c *gin.Context) {
 
 // GetAuthorizerAccessTokenHandler 获取AuthorizerAccessToken
 func GetAuthorizerAccessTokenHandler(c *gin.Context) {
-	var token string
-	var err error
-	for i := 0; i < 3; i++ {
-		if token, err = wxtoken.GetAuthorizerAccessToken(c.Query("appid")); err != nil {
-			log.Error(err)
-			if err.Error() == "lock fail" {
-				time.Sleep(200 * time.Millisecond)
-				continue
-			}
-		}
-		break
-	}
+	token, err := wx.GetAuthorizerAccessToken(c.Query("appid"))
 	if err != nil {
 		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
 		return

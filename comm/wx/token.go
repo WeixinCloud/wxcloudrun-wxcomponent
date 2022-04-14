@@ -1,4 +1,4 @@
-package wxtoken
+package wx
 
 import (
 	"bytes"
@@ -13,11 +13,28 @@ import (
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
 )
 
+func getAccessTokenWithRetry(appid string, tokenType int) (string, error) {
+	var token string
+	var err error
+	for i := 0; i < 3; i++ {
+		if token, err = getAccessToken(appid, tokenType); err != nil {
+			log.Error(err)
+			if err.Error() == "lock fail" {
+				time.Sleep(200 * time.Millisecond)
+				continue
+			}
+		}
+		break
+	}
+	return token, err
+}
+
 func getAccessToken(appid string, tokenType int) (string, error) {
 	// 读缓存
 	cacheCli := db.GetCache()
 	cacheKey := genTokenKey(appid, tokenType)
 	if value, found := cacheCli.Get(cacheKey); found {
+		log.Info("hit cache, token: ", value)
 		return value.(string), nil
 	}
 

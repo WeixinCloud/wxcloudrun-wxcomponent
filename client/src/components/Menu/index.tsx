@@ -29,29 +29,19 @@ export default function MyMenu(props: IProps) {
     useEffect(() => {
         if (location.pathname === activePath) return
         // 没想到太好的解法只能先这样写了
-        switch (location.pathname) {
-            case routes.thirdToken.path: {
-                setActivePath(routes.thirdToken.showPath)
-                break
-            }
-            case routes.thirdMessage.path: {
-                setActivePath(routes.thirdMessage.showPath)
-                break
-            }
-            default: {
-                setActivePath(location.pathname)
+        const keys = Object.keys(routes)
+        for (let i = 0; i < keys.length; i++) {
+            // @ts-ignore
+            if (routes[keys[i]].path === location.pathname) {
+                // @ts-ignore
+                setActivePath(routes[keys[i]].showPath ?? location.pathname)
+                return;
             }
         }
     }, [location.pathname])
 
     const changePath = (path: string | number) => {
         path = String(path)
-        if (path.includes('->')) {
-            const [showPath, realPath] = path.split('->')
-            setActivePath(showPath)
-            navigate(realPath)
-            return
-        }
         setActivePath(path)
         navigate(path)
     }
@@ -75,7 +65,7 @@ export default function MyMenu(props: IProps) {
                                 {
                                     (i.item || []).map(item => {
                                         return (
-                                            <MenuItem key={`menu_item_${item.path}`} value={item.showPath ? `${item.showPath}->${item.path}` : item.path}>
+                                            <MenuItem key={`menu_item_${item.path}`} value={item.path}>
                                                 {item.label}
                                             </MenuItem>
                                         )

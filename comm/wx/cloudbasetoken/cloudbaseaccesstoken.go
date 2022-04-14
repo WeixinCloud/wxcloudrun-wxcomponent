@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/config"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 )
 
@@ -22,22 +23,24 @@ func updateCloudBaseAccessToken() {
 }
 
 func init() {
-	updateCloudBaseAccessToken()
-	go func() {
-		if cloudBaseAccessToken == defaultAccessToken {
-			timer := time.NewTicker(1 * time.Minute)
-			for range timer.C {
-				updateCloudBaseAccessToken()
-				if cloudBaseAccessToken != defaultAccessToken {
-					break
+	if config.WxApiConf.UseCloudBaseAccessToken {
+		updateCloudBaseAccessToken()
+		go func() {
+			if cloudBaseAccessToken == defaultAccessToken {
+				timer := time.NewTicker(1 * time.Minute)
+				for range timer.C {
+					updateCloudBaseAccessToken()
+					if cloudBaseAccessToken != defaultAccessToken {
+						break
+					}
 				}
 			}
-		}
-		timer := time.NewTicker(10 * time.Minute)
-		for range timer.C {
-			updateCloudBaseAccessToken()
-		}
-	}()
+			timer := time.NewTicker(10 * time.Minute)
+			for range timer.C {
+				updateCloudBaseAccessToken()
+			}
+		}()
+	}
 }
 
 // GetCloudBaseAccessToken 获取CloudBaseAccessToken

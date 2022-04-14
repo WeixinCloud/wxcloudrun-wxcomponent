@@ -3,18 +3,23 @@ package admin
 // 系统鉴权，登录，人员管理
 
 import (
+	"fmt"
+	"net"
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/errno"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
-	"github.com/astaxie/beego/validation"
 	"github.com/gin-gonic/gin"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/utils"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/dao"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
 )
+
+const ErrHourlyLimit = 10
 
 func checkAuth(req model.UserRecord) (int32, error) {
 	record, err := dao.GetUserRecord(req.Username, req.Password)
@@ -36,21 +41,32 @@ func authHandler(c *gin.Context) {
 		return
 	}
 
-	valid := validation.Validation{}
-	ok, _ := valid.Valid(&req)
-
-	if !ok {
-		for _, err := range valid.Errors {
-			log.Debug(err.Key + " " + err.Message)
-		}
-		log.Error(valid.Errors)
-		c.JSON(http.StatusOK, errno.ErrAuthErr.WithData(valid.Errors))
+	ip, _, err := net.SplitHostPort(strings.TrimSpace(c.Request.RemoteAddr))
+	if err != nil {
+		log.Error(err.Error())
+	}
+	log.Info("Auth Ip: ", ip)
+	key := fmt.Sprintf("AUTH_%s_%d", ip, time.Now().Hour())
+	current, err := dao.GetCurrent(key)
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
+		return
+	}
+	log.Info("current: ", current)
+	if current >= ErrHourlyLimit {
+		c.JSON(http.StatusOK, errno.ErrAuthErrExceedLimit)
 		return
 	}
 
 	ID, err := checkAuth(req)
 	if err != nil {
 		log.Error(err.Error())
+		if err := dao.AddOne(key, ErrHourlyLimit); err != nil {
+			log.Error(err)
+			c.JSON(http.StatusOK, errno.ErrAuthErrExceedLimit)
+			return
+		}
 		c.JSON(http.StatusOK, errno.ErrAuthErr.WithData(err.Error()))
 		return
 	}

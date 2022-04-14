@@ -2,11 +2,11 @@ import {useState} from 'react'
 import styles from './index.module.less'
 import {Table, Button, PopConfirm} from 'tdesign-react';
 import {PrimaryTableCol} from "tdesign-react/es/table/type";
-import {request} from "../../utils/axios";
-import {getComponentTokenRequest, getTicketRequest} from "../../utils/apis";
+import {request} from "../../../utils/axios";
+import {getComponentTokenRequest, getTicketRequest} from "../../../utils/apis";
 import moment from "moment";
-import {copyMessage} from "../../utils/common";
-import {routes} from "../../components/Console";
+import {copyMessage} from "../../../utils/common";
+import {routes} from "../../../components/Console";
 
 const componentTokenColumn: PrimaryTableCol[] = [{
     align: 'left',

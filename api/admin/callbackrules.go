@@ -58,8 +58,8 @@ func getCallBackProxyRuleListHandler(c *gin.Context) {
 				Event:      v.Event,
 				Open:       v.Open,
 				Data:       proxyConfig,
-				CreateTime: v.CreateTime.UnixNano() / 1e6,
-				UpdateTime: v.UpdateTime.UnixNano() / 1e6,
+				CreateTime: v.CreateTime.Unix(),
+				UpdateTime: v.UpdateTime.Unix(),
 			})
 		}
 	}
@@ -190,13 +190,13 @@ type wxCallBackReq struct {
 func genWxCallBackReq(rule *model.WxCallbackRule) *wxCallBackReq {
 	if rule.InfoType != "" {
 		return &wxCallBackReq{
-			CreateTime: time.Now().UnixNano() / 1e6,
+			CreateTime: time.Now().Unix(),
 			InfoType:   rule.InfoType,
 			Data:       "TestData",
 		}
 	} else {
 		return &wxCallBackReq{
-			CreateTime:   time.Now().UnixNano() / 1e6,
+			CreateTime:   time.Now().Unix(),
 			MsgType:      rule.MsgType,
 			Event:        rule.Event,
 			ToUserName:   "TestUserName1",
