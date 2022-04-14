@@ -80,7 +80,8 @@ func AddCommKv(key string, value string) error {
 func DelCommKv(key string) error {
 	log.Infof("DelCommKv: %s", key)
 	cli := db.Get()
-	if err := cli.Table(commTableName).Where("`key` = ?", key).Delete(&model.CommKv{}).Error; err != nil {
+	if err := cli.Table(commTableName).Where("`key` = ?", key).
+		Delete(&model.CommKv{}).Error; err != nil {
 		log.Error(err.Error())
 		return err
 	}
@@ -91,7 +92,9 @@ func DelCommKv(key string) error {
 func DelExpiredCommKv(key string, d time.Duration) (int64, error) {
 	log.Infof("DelExpiredCommKv: %s", key)
 	cli := db.Get()
-	result := cli.Table(commTableName).Where("`key` = ? and UpdateTime < ?", key, time.Now().Add(-d)).Delete(&model.CommKv{})
+	result := cli.Table(commTableName).
+		Where("`key` = ? and UpdateTime < ?", key,
+			time.Now().Add(-d)).Delete(&model.CommKv{})
 	if result.Error != nil {
 		log.Error(result.Error)
 		return result.RowsAffected, result.Error

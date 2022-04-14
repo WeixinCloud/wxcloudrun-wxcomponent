@@ -101,3 +101,57 @@ export const testCallbackRuleRequest: IRequestMsg = {
     url: `${HOST}/admin/callback-test`, // 测试消息推送转发配置
     method: "post"
 }
+
+/* 代开发小程序相关 */
+export const getDevMiniProgramListRequest: IRequestMsg = {
+    url: `${HOST}/admin/dev-weapp-list`, // 获取代开发小程序列表
+    method: "get"
+}
+export const getQrcodeRequest: IRequestMsg = {
+    url: `${HOST}/admin/qrcode`, // 获取小程序码
+    method: "get"
+}
+export const getDevVersionRequest: IRequestMsg = {
+    url: `${HOST}/admin/dev-versions`, // 获取代开发小程序版本详情
+    method: "get"
+}
+export const submitAuditRequest: IRequestMsg = {
+    url: `${HOST}/admin/submit-audit`, // 提交审核
+    method: "post"
+}
+export const revokeAuditRequest: IRequestMsg = {
+    url: `${HOST}/admin/revoke-audit`, // 撤回审核
+    method: "post"
+}
+export const speedUpAuditRequest: IRequestMsg = {
+    url: `${HOST}/admin/speed-up-audit`, // 加急审核
+    method: "post"
+}
+export const commitCodeRequest: IRequestMsg = {
+    url: `${HOST}/admin/commit-code`, // 提交代码
+    method: "post"
+}
+export const releaseCodeRequest: IRequestMsg = {
+    url: `${HOST}/admin/release-code`, // 发布代码
+    method: "post"
+}
+export const getTemplateListRequest: IRequestMsg = {
+    url: `${HOST}/admin/template-list`, // 拉取模板列表
+    method: "get"
+}
+export const rollbackReleaseRequest: IRequestMsg = {
+    url: `${HOST}/admin/rollback-release-version`, // 拉取模板列表
+    method: "post"
+}
+export const changeServiceStatusRequest: IRequestMsg = {
+    url: `${HOST}/admin/change-visit-status`, // 修改服务状态
+    method: "post"
+}
+export const getCategoryRequest: IRequestMsg = {
+    url: `${HOST}/admin/category`, // 查询类目
+    method: "get"
+}
+export const uploadFileRequest: IRequestMsg = {
+    url: `${HOST}/admin/upload-media`, // 修改服务状态
+    method: "post"
+}

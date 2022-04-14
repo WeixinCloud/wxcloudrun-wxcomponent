@@ -54,7 +54,7 @@ const mustErrHandle = (data: {
 }) => {
     if (data.code === 1003 || data.code === 1004) {
         logout()
-        MessagePlugin.error(errorMsg[data.code], 2000)
+        MessagePlugin.error(errorMsg[data.code], 4000)
         return true
     }
     return false
@@ -67,12 +67,48 @@ const defaultErrHandle = (data: {
 }) => {
     switch (data.code) {
         case 1002: {
-            return MessagePlugin.error(`系统错误，请稍后重试 reason: ${data.errorMsg} - ${data.data}`, 2000)
+            return MessagePlugin.error(`${data.data}`, 4000)
         }
         default: {
-            return MessagePlugin.error(errorMsg[data.code] || `系统错误，请稍后重试 code：${data.code}`, 2000)
+            return MessagePlugin.error(errorMsg[data.code] || `系统错误，请稍后重试 code：${data.code}`, 4000)
         }
     }
+}
+
+const dataFormat = (data: Record<string, any>) => {
+    Object.keys(data).forEach(i => {
+        if (typeof data[i] === 'number' && String(data[i] ).length === 10) {
+            // 防止精度问题
+            data[i]  = Number(String(data[i]) + '000')
+        }
+        if (typeof data[i] === 'object') {
+            // typeof null === 'object'
+            if (!data[i]) return
+            if (Array.isArray(data[i])) {
+                arrayFormat(data[i])
+            } else {
+                dataFormat(data[i])
+            }
+        }
+    })
+    return data
+}
+
+const arrayFormat = (data: any[]) => {
+    data.forEach((i, index) => {
+        if (typeof i === 'number' && String(i).length === 10) {
+            // 防止精度问题
+            data[index] = Number(String(i) + '000')
+        }
+        if (typeof i === 'object') {
+            if (Array.isArray(i)) {
+                arrayFormat(i)
+            } else {
+                dataFormat(i)
+            }
+        }
+    })
+    return data
 }
 
 export const get = async (params: IAxiosParams, errHandle?: IErrHandle) => {
@@ -88,7 +124,7 @@ export const get = async (params: IAxiosParams, errHandle?: IErrHandle) => {
         ...params.config
     })).data as IAxiosResp
     if (data.code === 0) {
-        return data
+        return dataFormat(data)
     }
     if (!mustErrHandle(data)) {
         if (errHandle) {
@@ -114,7 +150,7 @@ export const post = async (params: IAxiosParams, errHandle?: IErrHandle) => {
         ...params.config
     })).data as IAxiosResp
     if (data.code === 0) {
-        return data
+        return dataFormat(data)
     }
     if (!mustErrHandle(data)) {
         if (errHandle) {
@@ -140,7 +176,7 @@ export const put = async (params: IAxiosParams, errHandle?: IErrHandle) => {
         ...params.config
     })).data as IAxiosResp
     if (data.code === 0) {
-        return data
+        return dataFormat(data)
     }
     if (!mustErrHandle(data)) {
         if (errHandle) {
@@ -166,7 +202,7 @@ export const deleteRequest = async (params: IAxiosParams, errHandle?: IErrHandle
         ...params.config
     })).data as IAxiosResp
     if (data.code === 0) {
-        return data
+        return dataFormat(data)
     }
     if (!mustErrHandle(data)) {
         if (errHandle) {

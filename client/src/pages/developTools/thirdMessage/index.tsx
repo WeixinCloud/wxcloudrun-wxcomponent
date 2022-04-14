@@ -3,8 +3,8 @@ import { Tabs, Button, DatePicker, Table, Input, MessagePlugin } from 'tdesign-r
 import {PrimaryTableCol} from "tdesign-react/es/table/type";
 import {useEffect, useState} from "react";
 import moment from 'moment'
-import {request} from "../../utils/axios";
-import {getAuthMessageRequest, getMessageConfigRequest, getNormalMessageRequest} from "../../utils/apis";
+import {request} from "../../../utils/axios";
+import {getAuthMessageRequest, getMessageConfigRequest, getNormalMessageRequest} from "../../../utils/apis";
 
 const { TabPanel } = Tabs;
 

@@ -29,9 +29,25 @@ func Routers(e *gin.RouterGroup) {
 	g.DELETE("/callback-proxy-rule", delCallBackProxyRuleHandler)
 	g.POST("/callback-test", testCallbackRuleHandler)
 
-	// 小程序管理
+	// 授权小程序管理
 	g.POST("/pull-authorizer-list", pullAuthorizerListHandler)
 	g.GET("/authorizer-list", getAuthorizerListHandler)
+
+	// 代开发小程序管理
+	g.GET("/dev-weapp-list", getDevWeAppListHandler)
+	g.POST("/submit-audit", submitAuditHandler)
+	g.GET("/dev-versions", devVersionsHandler)
+	g.GET("/template-list", templateListHandler)
+	g.POST("/revoke-audit", revokeAuditHandler)
+	g.POST("/speed-up-audit", speedUpAuditHandler)
+	g.POST("/commit-code", commitCodeHandler)
+	g.POST("/release-code", releaseCodeHandler)
+	g.POST("/upload-media", uploadMediaHandler)
+	g.POST("/change-visit-status", changeVisitStatusHandler)
+	g.POST("/rollback-release-version", rollbackReleaseVersionHandler)
+	g.GET("/page-list", getPageListHandler)
+	g.GET("/category", getCategoryHandler)
+	g.GET("/qrcode", getQRCodeHandler)
 
 	// 设置
 	g.POST("/secret", setWxSecretHandler)

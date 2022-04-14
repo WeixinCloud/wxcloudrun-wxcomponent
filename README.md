@@ -83,6 +83,7 @@ go run main
 +-----------------------+
 | authorizers           |
 | comm                  |
+| counter               |
 | user                  |
 | wxcallback_biz        |
 | wxcallback_component  |
@@ -97,6 +98,11 @@ go run main
 - wxcallback_component: 推送给授权事件URL的消息
 - wxcallback_rules: 消息转发规则
 - wxtoken: component_access_token和authorizer_access_token
+- counter: 登录失败计数
+#### 命名格式
+- 微信开放平台接口: 下划线
+- 微管家前后端交互: 小驼峰
+- 微信回调消息: 大驼峰
 
 ## License
 

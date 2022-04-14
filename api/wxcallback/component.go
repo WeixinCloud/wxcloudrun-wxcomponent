@@ -1,13 +1,11 @@
 package wxcallback
 
 import (
-	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/errno"
-	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/httputils"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx"
 
@@ -133,15 +131,15 @@ func newAuthHander(body *[]byte) error {
 }
 
 type queryAuthReq struct {
-	ComponentAppid    string `json:"component_appid"`
-	AuthorizationCode string `json:"authorization_code"`
+	ComponentAppid    string `wx:"component_appid"`
+	AuthorizationCode string `wx:"authorization_code"`
 }
 
 type authorizationInfo struct {
-	AuthorizerRefreshToken string `json:"authorizer_refresh_token"`
+	AuthorizerRefreshToken string `wx:"authorizer_refresh_token"`
 }
 type queryAuthResp struct {
-	AuthorizationInfo authorizationInfo `json:"authorization_info"`
+	AuthorizationInfo authorizationInfo `wx:"authorization_info"`
 }
 
 func queryAuth(authCode string) (string, error) {
@@ -149,12 +147,12 @@ func queryAuth(authCode string) (string, error) {
 		ComponentAppid:    wxbase.GetAppid(),
 		AuthorizationCode: authCode,
 	}
-	_, respbody, err := httputils.PostWxJson("/cgi-bin/component/api_query_auth", req, true)
+	var resp queryAuthResp
+	_, body, err := wx.PostWxJsonWithComponentToken("/cgi-bin/component/api_query_auth", "", req)
 	if err != nil {
 		return "", err
 	}
-	var resp queryAuthResp
-	if err := json.Unmarshal(respbody, &resp); err != nil {
+	if err := wx.WxJson.Unmarshal(body, &resp); err != nil {
 		log.Errorf("Unmarshal err, %v", err)
 		return "", err
 	}

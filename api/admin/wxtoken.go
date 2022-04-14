@@ -5,7 +5,7 @@ import (
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/errno"
 
-	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/token/cloudbasetoken"
+	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/cloudbasetoken"
 	"github.com/gin-gonic/gin"
 )
 
