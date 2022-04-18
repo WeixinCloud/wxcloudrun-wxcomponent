@@ -167,5 +167,22 @@ func getAuthorizerListHandler(c *gin.Context) {
 		}(i, record)
 	}
 	wg.Wait()
+
+	// 异步更新数据库
+	go func(oldRecords []*model.Authorizer, newRecords *[]getAuthorizerInfoResp) {
+		var updateRecords []model.Authorizer
+		for i, newRecord := range *newRecords {
+			newRecord.ID = oldRecords[i].ID
+			if *oldRecords[i] != newRecord.Authorizer {
+				updateRecords = append(updateRecords, newRecord.Authorizer)
+			}
+		}
+		if len(updateRecords) != 0 {
+			log.Info("update records: ", updateRecords)
+			dao.BatchCreateOrUpdateAuthorizerRecord(&updateRecords)
+		} else {
+			log.Info("no update")
+		}
+	}(records, &resp)
 	c.JSON(http.StatusOK, errno.OK.WithData(gin.H{"total": total, "records": resp}))
 }
