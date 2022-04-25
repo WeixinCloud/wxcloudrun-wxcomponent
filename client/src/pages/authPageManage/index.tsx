@@ -1,5 +1,5 @@
 import styles from './index.module.less'
-import {routes} from "../../components/Console";
+import {routes} from "../../config/route";
 import {copyMessage} from "../../utils/common";
 import {request} from "../../utils/axios";
 import {getComponentInfoRequest, updateComponentInfoRequest} from "../../utils/apis";

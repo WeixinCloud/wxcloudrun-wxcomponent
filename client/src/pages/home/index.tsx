@@ -6,7 +6,7 @@ import home03 from '../../assets/icons/home03.png'
 import home04 from '../../assets/icons/home04.png'
 import home05 from '../../assets/icons/home05.png'
 import home06 from '../../assets/icons/home06.png'
-import {routes} from "../../components/Console";
+import {routes} from "../../config/route";
 
 export default function Home() {
 

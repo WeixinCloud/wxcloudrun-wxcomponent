@@ -1,5 +1,5 @@
 import styles from './index.module.less'
-import {routes} from "../../components/Console";
+import {routes} from "../../config/route";
 
 export default function DevelopTools() {
 

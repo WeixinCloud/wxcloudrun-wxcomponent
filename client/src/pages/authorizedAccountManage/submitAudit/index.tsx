@@ -5,7 +5,7 @@ import {request} from "../../../utils/axios";
 import {getCategoryRequest, submitAuditRequest, uploadFileRequest} from "../../../utils/apis";
 import {useSearchParams} from "react-router-dom";
 import {UploadFile} from "tdesign-react/es/upload/type";
-import { routes } from "../../../components/Console";
+import {routes} from "../../../config/route";
 
 const { FormItem } = Form
 const { Option } = Select
@@ -152,7 +152,6 @@ export default function SubmitAudit() {
                 files[i].mediaId = resp.data.mediaId
                 files[i].status = 'success'
             } else {
-                console.log('没触发？')
                 toggleLoading(dataName)
                 return false
             }

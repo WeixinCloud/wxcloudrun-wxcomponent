@@ -19,7 +19,7 @@ import {
     serviceStatus,
     accountStatus, registerType, normalAccountStatus
 } from './enum'
-import {routes} from "../../components/Console";
+import {routes} from "../../config/route";
 
 const { TabPanel } = Tabs
 

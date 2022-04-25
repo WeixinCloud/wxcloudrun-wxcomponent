@@ -1,49 +1,47 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom'
-import Login from './pages/login'
-import {HashRouter, Routes, Route} from "react-router-dom";
-import Console, { routes } from "./components/Console";
+import {HashRouter, Routes, Route, useNavigate, Outlet} from "react-router-dom";
+import Console from "./components/Console";
 import { Popup } from 'tdesign-react';
 import * as Icon from 'tdesign-icons-react'
 import './main.less'
 import 'tdesign-react/es/style/index.css'; // 少量公共样式
-import ThirdToken from "./pages/developTools/thirdToken";
-import ThirdMessage from "./pages/developTools/thirdMessage";
-import AuthorizedAccountManage from "./pages/authorizedAccountManage";
-import SystemVersion from "./pages/systemVersion";
-import PasswordManage from "./pages/passwordManage";
-import AuthPageManage from "./pages/authPageManage";
-import AuthPage from "./pages/authPage";
-import AuthPageH5 from "./pages/authPageH5";
-import Home from "./pages/home";
-import DevelopTools from "./pages/developTools";
-import ForwardMessage from "./pages/forwardMessage";
-import ProxyConfig from "./pages/proxyConfig";
-import RedirectPage from "./pages/redirectPage";
-import MiniProgramVersion from "./pages/authorizedAccountManage/miniProgramVersion";
-import SubmitAudit from "./pages/authorizedAccountManage/submitAudit";
+import { routes } from './config/route'
+import {initNav} from "./utils/login";
+
+const InitNav = () => {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+       initNav(navigate)
+    }, [])
+
+    return <Outlet />
+}
 
 ReactDOM.render(
     <React.StrictMode>
         <HashRouter>
             <Routes>
-                <Route path={routes.login.path} element={<Login />} />
-                <Route path={routes.authorize.path} element={<AuthPage />} />
-                <Route path={routes.authorizeH5.path} element={<AuthPageH5 />} />
-                <Route path={routes.redirectPage.path} element={<RedirectPage />} />
-                <Route path={"/"} element={<Console />}>
-                    <Route path={routes.home.path} element={<Home />} />
-                    <Route path={routes.thirdToken.path} element={<ThirdToken />} />
-                    <Route path={routes.thirdMessage.path} element={<ThirdMessage />} />
-                    <Route path={routes.authorizedAccountManage.path} element={<AuthorizedAccountManage />} />
-                    <Route path={routes.systemVersion.path} element={<SystemVersion />} />
-                    <Route path={routes.passwordManage.path} element={<PasswordManage />} />
-                    <Route path={routes.authPageManage.path} element={<AuthPageManage />} />
-                    <Route path={routes.developTools.path} element={<DevelopTools />} />
-                    <Route path={routes.forwardMessage.path} element={<ForwardMessage />} />
-                    <Route path={routes.proxyConfig.path} element={<ProxyConfig />} />
-                    <Route path={routes.miniProgramVersion.path} element={<MiniProgramVersion />} />
-                    <Route path={routes.submitAudit.path} element={<SubmitAudit />} />
+                <Route element={<InitNav />}>
+                    {
+                        Object.values(routes).filter(i => i.dontNeedMenu).map(i => {
+                            return (
+                                // @ts-ignore
+                                <Route key={`route_${i.path}`} path={i.path} element={i.element} />
+                            )
+                        })
+                    }
+                    <Route path={"/"} element={<Console />}>
+                        {
+                            Object.values(routes).filter(i => !i.dontNeedMenu).map(i => {
+                                return (
+                                    // @ts-ignore
+                                    <Route key={`route_${i.path}`} path={i.path} element={i.element} />
+                                )
+                            })
+                        }
+                    </Route>
                 </Route>
             </Routes>
         </HashRouter>

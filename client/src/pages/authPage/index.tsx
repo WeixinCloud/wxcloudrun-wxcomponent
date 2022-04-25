@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {request} from "../../utils/axios";
 import {getComponentInfoRequest, getPreAuthCodeRequest} from "../../utils/apis";
-import {routes} from "../../components/Console";
+import {routes} from "../../config/route";
 
 export default function AuthPage() {
 

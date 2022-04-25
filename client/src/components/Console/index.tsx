@@ -4,117 +4,10 @@ import Menu from '../Menu'
 import {Outlet, useNavigate, useLocation} from "react-router-dom";
 import * as Icon from 'tdesign-icons-react'
 import {Dropdown, Dialog} from 'tdesign-react';
-import {checkLogin, initNav, logout} from "../../utils/login";
-
-export const routes = {
-    home: {
-      label: '首页',
-      path: '/home'
-    },
-    authorizedAccountManage: {
-        label: '授权帐号管理',
-        path: '/authorizedAccountManage'
-    },
-    authPageManage: {
-        label: '授权链接生成器',
-        path: '/authPageManage'
-    },
-    passwordManage: {
-        label: 'Secret与密码管理',
-        path: '/passwordManage'
-    },
-    systemVersion: {
-        label: '系统版本',
-        path: '/systemVersion'
-    },
-    login: {
-        label: '登录',
-        path: '/login'
-    },
-    authorize: {
-        label: '授权页',
-        path: '/authorize'
-    },
-    authorizeH5: {
-        label: '授权页H5',
-        path: '/authorizeH5'
-    },
-    developTools: {
-        label: '开发调试',
-        path: '/developTools'
-    },
-    thirdToken: {
-        label: '第三方 Token',
-        path: '/developTools/token',
-        showPath: '/developTools'
-    },
-    thirdMessage: {
-        label: '第三方消息查看',
-        path: '/developTools/message',
-        showPath: '/developTools',
-    },
-    forwardMessage: {
-        label: '消息转发器',
-        path: '/forwardMessage'
-    },
-    proxyConfig: {
-        label: 'proxy 配置',
-        path: '/proxyConfig'
-    },
-    redirectPage: {
-        label: '授权回调跳转页',
-        path: '/redirectPage'
-    },
-    miniProgramVersion: {
-        label: '版本管理',
-        path: '/authorizedAccountManage/miniProgramVersion',
-        showPath: '/authorizedAccountManage'
-    },
-    submitAudit: {
-        label: '提交审核',
-        path: '/authorizedAccountManage/submitAudit',
-        showPath: '/authorizedAccountManage'
-    },
-}
-
-type IMenuItem = {
-    label: string
-    path: string
-    item?: IMenuItem[]
-    showPath?: string
-    hideItem?: IMenuItem[]
-}
-
-type IMenuList = {
-    label: string
-    icon: JSX.Element
-    path?: string
-    item?: IMenuItem[]
-    hideItem?: IMenuItem[]
-}[]
-
-const menuList: IMenuList = [{
-    ...routes.home,
-    icon: <Icon.HomeIcon />,
-}, {
-    label: '管家中心',
-    icon: <Icon.AppIcon />,
-    item: [routes.authPageManage, {
-        ...routes.authorizedAccountManage,
-        hideItem: [routes.submitAudit, routes.miniProgramVersion],
-    }]
-}, {
-    label: '开发辅助',
-    icon: <Icon.ViewListIcon />,
-    item: [{
-        ...routes.developTools,
-        hideItem: [routes.thirdToken, routes.thirdMessage],
-    }, routes.forwardMessage, routes.proxyConfig]
-}, {
-    label: '系统管理',
-    icon: <Icon.SettingIcon />,
-    item: [routes.passwordManage, routes.systemVersion]
-}]
+import {checkLogin, logout} from "../../utils/login";
+import {menuList} from "../../config/menu";
+import {IMenuItem, IMenuList} from "../../commonType";
+import {routes} from "../../config/route";
 
 const options = [
     {
@@ -141,7 +34,6 @@ export default function Console() {
     const [username] = useState(localStorage.getItem('username') || '')
 
     useEffect(() => {
-        initNav(navigate)
         if (checkLogin()) {
             if (location.pathname === '/' || location.pathname === routes.login.path) {
                 navigate(routes.home.path)
@@ -187,7 +79,7 @@ export default function Console() {
 
     return (
         <div className={styles.console}>
-            <div style={{width: '232px'}} />
+            <div style={{width: '232px', backgroundColor: '#f5f6f7'}} />
             <span className={styles.console_menu}>
                 <Menu menuList={menuList} />
             </span>
@@ -222,7 +114,7 @@ export default function Console() {
             </div>
             <Dialog header="通知中心" visible={showNotice} onConfirm={() => setShowNotice(false)}
                     onClose={() => setShowNotice(false)}>
-                <p>管理工具最新版本为V 2.1.0，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看</p>
+                <p>管理工具最新版本为V 2.2.0，详情可前往<a className="a" href={`#${routes.systemVersion.path}`}>系统版本</a>查看</p>
             </Dialog>
         </div>
     )

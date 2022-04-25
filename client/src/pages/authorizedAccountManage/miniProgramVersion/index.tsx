@@ -25,7 +25,7 @@ import {
 } from "../../../utils/apis";
 import {useSearchParams} from "react-router-dom";
 import moment from "moment";
-import {routes} from "../../../components/Console";
+import {routes} from "../../../config/route";
 
 const {FormItem} = Form;
 const {Option} = Select

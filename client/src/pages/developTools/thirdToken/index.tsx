@@ -6,7 +6,7 @@ import {request} from "../../../utils/axios";
 import {getComponentTokenRequest, getTicketRequest} from "../../../utils/apis";
 import moment from "moment";
 import {copyMessage} from "../../../utils/common";
-import {routes} from "../../../components/Console";
+import {routes} from "../../../config/route";
 
 const componentTokenColumn: PrimaryTableCol[] = [{
     align: 'left',

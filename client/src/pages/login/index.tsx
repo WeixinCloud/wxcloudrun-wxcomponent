@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import moment from "moment";
 import md5 from 'js-md5'
 import {request} from "../../utils/axios";
-import {routes} from "../../components/Console";
+import {routes} from "../../config/route";
 
 export default function Login() {
 
