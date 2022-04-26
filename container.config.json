@@ -3,16 +3,16 @@
 	// 模板部署结束后，后续服务发布与本配置文件完全无关，修改「服务设置」请到控制台操作。
 	// 复制模板代码自行开发请忽略本配置文件。
 	
-	"containerPort": 80,                          // 监听端口。需要和main.go中保持一致。
-	"minNum": 0,                                    // 实例副本数最小值。若为0，则连续半小时无访问会暂停，不再计费，再次有访问时冷启动；若大于0，则无论是否有访问，都会持续运行并计费。
-	"maxNum": 50,                                   // 实例副本数最大值
-	"cpu": 0.25,                                    // 容器规格-CPU大小
-	"mem": 0.5,                                     // 容器规格-内存大小
-	"policyType": "cpu",                            // 扩缩容条件：CPU使用率
-	"policyThreshold": 60,                          // 扩缩容条件：使用率超过60%触发
-	"envParams": {},                                // 环境变量。可以有多个。
-	"customLogs": "stdout",                         // 日志采集路径，只有此路径下的日志会显示在微信云托管控制台“日志”界面中
-	"dataBaseName":"wxcomponent",                   // 创建的数据库表的名称
+	"containerPort": 80,                         
+	"minNum": 0,                                  
+	"maxNum": 50,                                  
+	"cpu": 0.25,                                  
+	"mem": 0.5,                                    
+	"policyType": "cpu",                          
+	"policyThreshold": 60,                        
+	"envParams": {},                             
+	"customLogs": "stdout",                        
+	"dataBaseName":"wxcomponent",                  
 	"executeSQLs":[
 		"CREATE DATABASE IF NOT EXISTS wxcomponent;",
 		"USE wxcomponent;",
@@ -24,5 +24,5 @@
 		"CREATE TABLE IF NOT EXISTS `wxcallback_rules` (`id` INT UNSIGNED AUTO_INCREMENT, `name` VARCHAR(64) NOT NULL DEFAULT '', `infotype` VARCHAR(64) NOT NULL DEFAULT '', `msgtype` VARCHAR(64) NOT NULL DEFAULT '', `event` VARCHAR(64) NOT NULL DEFAULT '', `type` INT NOT NULL DEFAULT 0, `open` INT NOT NULL DEFAULT 0,  `info` TEXT NOT NULL, `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `updatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY(infotype, msgtype, event)) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 		"CREATE TABLE IF NOT EXISTS `wxtoken` (`id` INT UNSIGNED AUTO_INCREMENT, `type` INT NOT NULL DEFAULT 0, `appid` VARCHAR(128) NOT NULL DEFAULT '', `token` TEXT NOT NULL, `expiretime` TIMESTAMP NOT NULL, `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `updatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY `appid_uindex` (`appid`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 		"CREATE TABLE IF NOT EXISTS `counter` (`id` INT UNSIGNED AUTO_INCREMENT, `key` VARCHAR(64) NOT NULL, `value` INT UNSIGNED, `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `updatetime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY(`key`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
-	]// 数据库初始化执行命令
+	]
 }
