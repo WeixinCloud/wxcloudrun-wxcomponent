@@ -48,7 +48,7 @@
 │   ├── log                             // 日志
 │   ├── utils                           // 其他工具
 │   └── wx                              // 微信相关
-├── container.config.json               // 微信云托管配置
+├── container.config.json               // 微信云托管初始化服务配置，二开不生效请忽略
 ├── db                                  // 数据库相关
 │   ├── dao
 │   ├── init.go
