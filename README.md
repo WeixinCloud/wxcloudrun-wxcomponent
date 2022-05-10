@@ -107,9 +107,10 @@ go run main
 ## 使用注意
 如果不是通过微信云托管控制台部署模板代码，而是自行复制/下载模板代码后，手动新建一个服务并部署，需要在「服务设置」中补全以下环境变量，才可正常使用，否则会引发无法连接数据库，进而导致部署失败。
 
-MYSQL_ADDRESS
-MYSQL_PASSWORD
-MYSQL_USERNAME 以上三个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
+- MYSQL_ADDRESS
+- MYSQL_PASSWORD
+- MYSQL_USERNAME 
+以上三个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
 
 
 ## License
