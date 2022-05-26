@@ -110,6 +110,7 @@ go run main
 - MYSQL_ADDRESS
 - MYSQL_PASSWORD
 - MYSQL_USERNAME 
+- WX_APPID
 以上三个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
 
 
