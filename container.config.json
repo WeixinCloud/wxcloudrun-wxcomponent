@@ -9,7 +9,17 @@
 	"cpu": 0.25,                                  
 	"mem": 0.5,                                    
 	"policyType": "cpu",                          
-	"policyThreshold": 60,                        
+	"policyThreshold": 60,     
+	"policyDetails": {
+		{
+			"PolicyType": "cpu",
+			"PolicyThreshold": 60
+		},
+		{
+			"PolicyType": "mem",
+			"PolicyThreshold": 60
+		}
+	},
 	"envParams": {},                             
 	"customLogs": "stdout",                        
 	"dataBaseName":"wxcomponent",                  
