@@ -20,8 +20,8 @@ func InitAdmin(username, password string) error {
 
 // Init 初始化管理员
 func Init() error {
-	username := os.Getenv("MYSQL_USERNAME")
-	password := os.Getenv("MYSQL_PASSWORD")
+	username := os.Getenv("ADMIN_USERNAME")
+	password := os.Getenv("ADMIN_PASSWORD")
 	log.Debugf("GetUser user[%s] pwd[%s]", username, password)
 	// conv password like website
 	md5Pwd := encrypt.GenerateMd5(password)

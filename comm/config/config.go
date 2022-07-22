@@ -51,6 +51,16 @@ func init() {
 		ServerConf.JwtSecret = encrypt.GenerateMd5(os.Getenv("MYSQL_PASSWORD"))
 	}
 	log.Info(ServerConf)
+
+	cfgCustom:=cfg.Section("custom")
+	os.Setenv("MYSQL_USERNAME",cfgCustom.Key("MYSQL_USERNAME").String())
+	os.Setenv("MYSQL_PASSWORD",cfgCustom.Key("MYSQL_PASSWORD").String())
+	os.Setenv("MYSQL_ADDRESS",cfgCustom.Key("MYSQL_ADDRESS").String())
+	os.Setenv("WX_APPID",cfgCustom.Key("WX_APPID").String())
+	os.Setenv("BACKEND_PORT",cfgCustom.Key("BACKEND_PORT").String())
+	os.Setenv("FRONTEND_PORT",cfgCustom.Key("FRONTEND_PORT").String())
+	os.Setenv("ADMIN_USERNAME",cfgCustom.Key("ADMIN_USERNAME").String())
+	os.Setenv("ADMIN_PASSWORD",cfgCustom.Key("ADMIN_PASSWORD").String())
 }
 
 func mapTo(section string, v interface{}) {

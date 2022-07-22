@@ -5,6 +5,7 @@ import (
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/routers"
 	"golang.org/x/sync/errgroup"
+	"os"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 	// 内部服务
 	g.Go(func() error {
 		r := routers.InnerServiceInit()
-		if err := r.Run("127.0.0.1:8081"); err != nil {
+		if err := r.Run(os.Getenv("BACKEND_PORT")); err != nil {
 			log.Error("startup inner service failed, err:%v", err)
 			return err
 		}
@@ -30,7 +31,7 @@ func main() {
 	// 外部服务
 	g.Go(func() error {
 		r := routers.Init()
-		if err := r.Run(":80"); err != nil {
+		if err := r.Run(os.Getenv("FRONTEND_PORT")); err != nil {
 			log.Error("startup service failed, err:%v", err)
 			return err
 		}
