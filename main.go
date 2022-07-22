@@ -4,6 +4,7 @@ import (
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/inits"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/routers"
+	_ "github.com/joho/godotenv/autoload"
 	"golang.org/x/sync/errgroup"
 )
 

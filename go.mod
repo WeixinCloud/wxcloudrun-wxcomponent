@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.7.6
 	github.com/go-ini/ini v1.64.0
 	github.com/golang-jwt/jwt/v4 v4.2.0
+	github.com/joho/godotenv v1.4.0
 	github.com/json-iterator/go v1.1.10
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/rs/zerolog v1.26.0
