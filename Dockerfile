@@ -16,7 +16,7 @@ WORKDIR /wxcloudrun-wxcomponent
 COPY . /wxcloudrun-wxcomponent/
 
 # 执行代码编译命令。操作系统参数为linux，编译后的二进制产物命名为main，并存放在当前目录下。
-RUN GOOS=linux GOARCH=amd64 go build -o main .
+RUN GOPROXY="https://goproxy.cn" GO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
 
 # 选用运行时所用基础镜像（GO语言选择原则：尽量体积小、包含基础linux内容的基础镜像）
 FROM alpine:3.13
@@ -30,8 +30,10 @@ COPY --from=builder /wxcloudrun-wxcomponent/comm/config/server.conf /wxcloudrun-
 COPY --from=nodeBuilder /wxcloudrun-wxcomponent/client/dist /wxcloudrun-wxcomponent/client/dist
 
 # 设置时区
-RUN apk --update add tzdata && \
-    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories && \
+    apk update && \
+    apk add --no-cache tzdata && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
     echo "Asia/Shanghai" > /etc/timezone && \
     apk del tzdata && \
     rm -rf /var/cache/apk/*

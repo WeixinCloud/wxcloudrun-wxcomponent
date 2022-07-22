@@ -70,6 +70,20 @@
 #### 本地调试
 服务启动前会从环境变量中读取数据库配置，自行写入环境变量后运行一下代码，即可在本地启动服务。
 ```
+在 comm/config/server.conf 的 [custom] 模块下自行修改：
+
+[custom]
+MYSQL_USERNAME="admin"          #数据库用户名
+MYSQL_PASSWORD="Aa123456"       #数据库密码
+MYSQL_ADDRESS="127.0.0.1:3306"  #数据库地址
+WX_APPID="wx################"   #微信APPID
+FRONTEND_PORT=":80"             #前端访问入口地址
+BACKEND_PORT="127.0.0.1:8081"   #内部api端口
+ADMIN_USERNAME="admin"          #登陆用户名
+ADMIN_PASSWORD="Aa123456"       #登陆密码
+
+该配置文件会执行main()方法前，在cfg包init()方法进行加载。
+
 go run main
 ```
 
