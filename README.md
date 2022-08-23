@@ -105,15 +105,17 @@ go run main
 - 微信回调消息: 大驼峰
 
 ## 使用注意
-如果不是通过微信云托管控制台部署模板代码，而是自行复制/下载模板代码后，手动新建一个服务并部署，需要在「服务设置」中补全以下环境变量，才可正常使用，否则会引发无法连接数据库，进而导致部署失败。
+1. 需打开云托管开放接口服务开关后才能免鉴权调用微信开放api。
+  ![开放接口服务](https://res.wx.qq.com/op_res/6rcrTi7fRr5LStuAxoI94RrXbKG5L7OAiRfliINbA4qcM73YIjl7sMUgvSQBycgeKMBmsj7mJ2l5gTj1uCMlkA)
 
-- MYSQL_ADDRESS
-- MYSQL_PASSWORD
-- MYSQL_USERNAME 
-- WX_APPID
+2. 如果不是通过微信云托管控制台部署模板代码，而是自行复制/下载模板代码后，手动新建一个服务并部署，需要在「服务设置」中补全以下环境变量，才可正常使用，否则会引发无法连接数据库，进而导致部署失败。
 
-以上四个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
+   - MYSQL_ADDRESS
+   - MYSQL_PASSWORD
+   - MYSQL_USERNAME 
+   - WX_APPID
 
+   以上四个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
 
 ## License
 
