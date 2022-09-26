@@ -258,7 +258,7 @@ export default function AuthorizedAccountManage() {
             request: getDevMiniProgramListRequest,
             data: {
                 offset: (mpCurrentPage - 1) * pageSize,
-                count: pageSize,
+                limit: pageSize,
                 appid: miniProgramAppIdInput,
             }
         })
