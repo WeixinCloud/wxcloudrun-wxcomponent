@@ -1,0 +1,22 @@
+
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v3
+    - name: build and push 
+      run: docker build . -t "ghcr.io/${{ github.actor }}/wxcloudrun-wxcomponent" && docker push "ghcr.io/${{ github.actor }}/wxcloudrun-wxcomponent"
