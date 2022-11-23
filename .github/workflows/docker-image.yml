@@ -19,4 +19,4 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v3
     - name: build and push 
-      run: docker build . -t "ghcr.io/${{ github.repository }}" && docker push "ghcr.io/${{ github.repository }}"
+      run: GITHUB_REPO=`echo "${{ github.repository }}" | tr "[:upper:]" "[:lower:]"` && docker build . -t "ghcr.io/$GITHUB_REPO" && docker push "ghcr.io/$GITHUB_REPO"
