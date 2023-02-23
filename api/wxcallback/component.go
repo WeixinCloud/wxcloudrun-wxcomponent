@@ -1,6 +1,7 @@
 package wxcallback
 
 import (
+	"encoding/xml"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -20,22 +21,56 @@ type wxCallbackComponentRecord struct {
 	CreateTime int64  `json:"CreateTime"`
 	InfoType   string `json:"InfoType"`
 }
+type wxReq struct {
+	Signature     string `form:"signature"`
+	Timestamp     int64  `form:"timestamp"`
+	Nonce         string `form:"nonce"`
+	Msg_signature string `form:"msg_signature"`
+	Encrypt_type  string `form:"encrypt_type"`
+}
+
+type EncryptRequestBody struct {
+	XMLName                      xml.Name `xml:"xml"`
+	AppId                        string   `xml:"AppId" json:"app_id"`
+	CreateTime                   int64    `xml:"CreateTime" json:"create_time"`
+	InfoType                     string   `xml:"InfoType" json:"info_type"`
+	ComponentVerifyTicket        string   `xml:"ComponentVerifyTicket" json:"component_verify_ticket"`
+	AuthorizerAppid              string   `xml:"AuthorizerAppid" json:"authorizer_appid"`
+	AuthorizationCode            string   `xml:"AuthorizationCode" json:"authorization_code"`
+	AuthorizationCodeExpiredTime string   `xml:"AuthorizationCodeExpiredTime" json:"authorization_code_expired_time"`
+	PreAuthCode                  string   `xml:"PreAuthCode" json:"pre_auth_code"`
+}
+
+func ParseEncryptRequestBody(r *http.Request) *EncryptRequestBody {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return nil
+	}
+	//  mlog.AppendObj(nil, "Wechat Message Service: RequestBody--", body)
+	requestBody := &EncryptRequestBody{}
+	xml.Unmarshal(body, requestBody)
+	return requestBody
+
+}
 
 func componentHandler(c *gin.Context) {
 	// 记录到数据库
 	body, _ := ioutil.ReadAll(c.Request.Body)
-	var json wxCallbackComponentRecord
-	if err := binding.JSON.BindBody(body, &json); err != nil {
-		c.JSON(http.StatusOK, errno.ErrInvalidParam.WithData(err.Error()))
-		return
+	wxReq := &wxReq{}
+	if err := c.ShouldBindQuery(&wxReq); err != nil {
+		c.JSON(200, gin.H{
+			"err": err.Error(),
+		})
 	}
+	encrypttBody := ParseEncryptRequestBody(c.Request)
+	log.Info(encrypttBody)
 	r := model.WxCallbackComponentRecord{
-		CreateTime:  time.Unix(json.CreateTime, 0),
+		CreateTime:  time.Unix(encrypttBody.CreateTime, 0),
 		ReceiveTime: time.Now(),
-		InfoType:    json.InfoType,
+		InfoType:    encrypttBody.InfoType,
 		PostBody:    string(body),
 	}
-	if json.CreateTime == 0 {
+	if encrypttBody.CreateTime == 0 {
 		r.CreateTime = time.Unix(1, 0)
 	}
 	if err := dao.AddComponentCallBackRecord(&r); err != nil {
@@ -45,7 +80,7 @@ func componentHandler(c *gin.Context) {
 
 	// 处理授权相关的消息
 	var err error
-	switch json.InfoType {
+	switch encrypttBody.InfoType {
 	case "component_verify_ticket":
 		err = ticketHandler(&body)
 	case "authorized":
@@ -63,7 +98,7 @@ func componentHandler(c *gin.Context) {
 
 	// 转发到用户配置的地址
 	var proxyOpen bool
-	proxyOpen, err = proxyCallbackMsg(json.InfoType, "", "", string(body), c)
+	proxyOpen, err = proxyCallbackMsg(encrypttBody.InfoType, "", "", string(body), c)
 	if err != nil {
 		log.Error(err)
 		c.JSON(http.StatusOK, errno.ErrSystemError.WithData(err.Error()))
