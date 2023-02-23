@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var IpWhitelist []string = []string{"127.0.0.1"}
+var IpWhitelist []string = []string{"127.0.0.1", "10.10.150.8"}
 
 // 内部服务中间件
 func InnerServiceMiddleWare(c *gin.Context) {

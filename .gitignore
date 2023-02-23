@@ -1,7 +1,7 @@
 .idea
 .DS_Store
 .vscode
-./history
+.history
 
 client/node_modules
 client/.pnp
