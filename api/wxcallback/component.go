@@ -4,29 +4,35 @@ import (
 	"encoding/xml"
 	"io/ioutil"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/errno"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/log"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx"
+	"github.com/subosito/gotenv"
 
 	wxbase "github.com/WeixinCloud/wxcloudrun-wxcomponent/comm/wx/base"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/dao"
 	"github.com/WeixinCloud/wxcloudrun-wxcomponent/db/model"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
+
+var appid string
+var token string
+var aesKey string
+
+func init() {
+	gotenv.Load()
+	aesKey = os.Getenv("WX_AESKEY")
+	token = os.Getenv("WX_TOKEN")
+	appid = os.Getenv("WX_APPID")
+}
 
 type wxCallbackComponentRecord struct {
 	CreateTime int64  `json:"CreateTime"`
 	InfoType   string `json:"InfoType"`
-}
-type wxReq struct {
-	Signature     string `form:"signature"`
-	Timestamp     int64  `form:"timestamp"`
-	Nonce         string `form:"nonce"`
-	Msg_signature string `form:"msg_signature"`
-	Encrypt_type  string `form:"encrypt_type"`
 }
 
 type EncryptRequestBody struct {
@@ -56,16 +62,22 @@ func ParseEncryptRequestBody(r *http.Request) *EncryptRequestBody {
 func componentHandler(c *gin.Context) {
 	// 记录到数据库
 	body, _ := ioutil.ReadAll(c.Request.Body)
-	wxReq := &wxReq{}
+	wxReq := WxReq{}
 	if err := c.ShouldBindQuery(&wxReq); err != nil {
 		c.JSON(200, gin.H{
 			"err": err.Error(),
 		})
 	}
-	encrypttBody := ParseEncryptRequestBody(c.Request)
+	instance := NewWechatMsgCrypt(token, aesKey, appid)
+
+	bytes := []byte(body)
+	s := strings.TrimSpace(string(bytes))
+	xmlData := EventEncryptRequest{}
+	_ = xml.Unmarshal([]byte(s), &xmlData)
+	encrypttBody := instance.WechatEventDecrypt(wxReq, xmlData)
 	log.Info(encrypttBody)
 	r := model.WxCallbackComponentRecord{
-		CreateTime:  time.Unix(encrypttBody.CreateTime, 0),
+		CreateTime:  time.Unix(int64(encrypttBody.CreateTime), 0),
 		ReceiveTime: time.Now(),
 		InfoType:    encrypttBody.InfoType,
 		PostBody:    string(body),
@@ -82,13 +94,13 @@ func componentHandler(c *gin.Context) {
 	var err error
 	switch encrypttBody.InfoType {
 	case "component_verify_ticket":
-		err = ticketHandler(&body)
+		err = ticketHandler(encrypttBody)
 	case "authorized":
 		fallthrough
 	case "updateauthorized":
-		err = newAuthHander(&body)
+		err = newAuthHander(encrypttBody)
 	case "unauthorized":
-		err = unAuthHander(&body)
+		err = unAuthHander(encrypttBody)
 	}
 	if err != nil {
 		log.Error(err)
@@ -113,11 +125,8 @@ type ticketRecord struct {
 	ComponentVerifyTicket string `json:"ComponentVerifyTicket"`
 }
 
-func ticketHandler(body *[]byte) error {
-	var record ticketRecord
-	if err := binding.JSON.BindBody(*body, &record); err != nil {
-		return err
-	}
+func ticketHandler(encrypttBody EventMessageBody) error {
+	record := ticketRecord{ComponentVerifyTicket: encrypttBody.ComponentVerifyTicket}
 	log.Info("[new ticket]" + record.ComponentVerifyTicket)
 	if err := wxbase.SetTicket(record.ComponentVerifyTicket); err != nil {
 		return err
@@ -129,16 +138,18 @@ type newAuthRecord struct {
 	CreateTime                   int64  `json:"CreateTime"`
 	AuthorizerAppid              string `json:"AuthorizerAppid"`
 	AuthorizationCode            string `json:"AuthorizationCode"`
-	AuthorizationCodeExpiredTime int64  `json:"AuthorizationCodeExpiredTime"`
+	AuthorizationCodeExpiredTime string `json:"AuthorizationCodeExpiredTime"`
 }
 
-func newAuthHander(body *[]byte) error {
-	var record newAuthRecord
+func newAuthHander(encrypttBody EventMessageBody) error {
 	var err error
 	var refreshtoken string
 	var appinfo wx.AuthorizerInfoResp
-	if err = binding.JSON.BindBody(*body, &record); err != nil {
-		return err
+	record := newAuthRecord{
+		CreateTime:                   int64(encrypttBody.CreateTime),
+		AuthorizerAppid:              encrypttBody.AuthorizerAppid,
+		AuthorizationCode:            encrypttBody.AuthorizationCode,
+		AuthorizationCodeExpiredTime: encrypttBody.AuthorizationCodeExpiredTime,
 	}
 	if refreshtoken, err = queryAuth(record.AuthorizationCode); err != nil {
 		return err
@@ -199,12 +210,10 @@ type unAuthRecord struct {
 	AuthorizerAppid string `json:"AuthorizerAppid"`
 }
 
-func unAuthHander(body *[]byte) error {
-	var record unAuthRecord
-	var err error
-	if err = binding.JSON.BindBody(*body, &record); err != nil {
-		log.Errorf("bind err %v", err)
-		return err
+func unAuthHander(encrypttBody EventMessageBody) error {
+	record := unAuthRecord{
+		CreateTime:      int64(encrypttBody.CreateTime),
+		AuthorizerAppid: encrypttBody.AuthorizerAppid,
 	}
 	if err := dao.DelAuthorizerRecord(record.AuthorizerAppid); err != nil {
 		log.Errorf("DelAuthorizerRecord err %v", err)
