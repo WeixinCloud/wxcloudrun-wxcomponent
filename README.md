@@ -117,8 +117,9 @@ go run main
 ## 使用注意
 1. 需打开云托管开放接口服务开关后才能免鉴权调用微信开放api。
   ![开放接口服务](https://res.wx.qq.com/op_res/6rcrTi7fRr5LStuAxoI94RrXbKG5L7OAiRfliINbA4qcM73YIjl7sMUgvSQBycgeKMBmsj7mJ2l5gTj1uCMlkA)
+  说明：如果需要自行下载代码包部署，请确保comm/config/server.conf里的UseCloudBaseAccessToken为true
 
-2. 如果不是通过微信云托管控制台部署模板代码，而是自行复制/下载模板代码后，手动新建一个服务并部署，需要在「服务设置」中补全以下环境变量，才可正常使用，否则会引发无法连接数据库，进而导致部署失败。
+2. 如果不是通过开放平台一键部署服务，而是自行复制/下载模板代码后，手动新建一个服务并部署，需要在「服务设置」中补全以下环境变量，才可正常使用，否则会引发无法连接数据库，进而导致部署失败。
 
    - MYSQL_ADDRESS
    - MYSQL_PASSWORD
