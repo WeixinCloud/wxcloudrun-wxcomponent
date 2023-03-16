@@ -127,6 +127,11 @@ go run main
 
    以上四个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
 
+3. 如需拉取部署微管家以前的授权数据，可向微管家服务发起数据同步请求，请求说明如下：
+    - method: POST
+    - path: wxcomponent/admin/pull-authorizer-list
+    - header: `Authorization: Bear <your jwt>`
+
 ## License
 
 [MIT](./LICENSE)
