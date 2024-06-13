@@ -5,7 +5,7 @@ WORKDIR /wxcloudrun-wxcomponent
 # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
 COPY . /wxcloudrun-wxcomponent/
 
-RUN cd /wxcloudrun-wxcomponent/client && npm install --registry=https://registry.npm.taobao.org && npm run build
+RUN cd /wxcloudrun-wxcomponent/client && npm install --registry=https://registry.npmmirror.com && npm run build
 
 FROM golang:1.17.1-alpine3.14 as builder
 
