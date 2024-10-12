@@ -128,7 +128,41 @@ go run main
 
    以上四个变量的值请按实际情况填写。如果使用云托管内MySQL，可以在控制台MySQL页面获取相关信息。
 
-3. 如需拉取部署微管家以前的授权数据，可向微管家服务发起数据同步请求，请求说明如下：
+3. 自行复制/下载模板代码包部署时安装有问题，则先关闭「云调用-开放接口服务」，等部署后，再重新打开再触发一次部署。开放接口服务配置接口填如下：
+
+```
+/cgi-bin/component/api_get_authorizer_list
+/cgi-bin/component/api_get_authorizer_info
+/cgi-bin/component/api_create_preauthcode
+/cgi-bin/component/api_authorizer_token
+/cgi-bin/component/api_component_token
+/cgi-bin/component/api_query_auth
+/cgi-bin/media/upload
+/cgi-bin/componentloginpage
+/wxa/submit_audit
+/wxa/get_latest_auditstatus
+/wxa/getvisitstatus
+/wxa/getversioninfo
+/wxa/getwxacodeunlimit
+/wxa/get_qrcode
+/wxa/gettemplatelist
+/wxa/undocodeaudit
+/wxa/speedupaudit
+/wxa/commit
+/wxa/release
+/wxa/change_visitstatus
+/wxa/revertcoderelease
+/wxa/get_page
+/wxa/get_category
+```
+4. 运行成功后，需在「系统管理-Secret与密码管理」中配置第三方平台的 Secret信息，部署后需要在第三方平台中，配置相应推送授权路径，[效果图](https://res.wx.qq.com/op_res/-hcDJVTUTTq70gAEYhzdVM2LYyhcKDHuLRX_4rEpTNjjwkqGWnvfuCmbLmAtI2LXtqvu-PnIMyGeH8TzQf-u9Q)
+
+- 登录授权的发起页域名：直接配置服务商微管家的运行域名
+- 推送路径按照图中配置
+- 云托管环境和服务名称写自己的
+
+
+6. 如需拉取部署微管家以前的授权数据，可向微管家服务发起数据同步请求，请求说明如下：
     - method: POST
     - path: wxcomponent/admin/pull-authorizer-list
     - header: `Authorization: Bear <your jwt>`
